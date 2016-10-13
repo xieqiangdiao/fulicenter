@@ -20,7 +20,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.CategoryChildActivity;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.utils.ImageLoader;

@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
-import cn.ucai.fulicenter.R;
+import uai.cn.fullcenter.R;
+
 
 /**
  * Created by clawpo on 16/8/3.
