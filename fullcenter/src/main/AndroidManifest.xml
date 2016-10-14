@@ -11,7 +11,13 @@
         <activity android:name="cn.ucai.fulicenter.activity.MainActivity">
 
         </activity>
-        <activity android:name="cn.ucai.fulicenter.activity.SplashActivity"></activity>
+        <activity android:name="cn.ucai.fulicenter.activity.SplashActivity"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
