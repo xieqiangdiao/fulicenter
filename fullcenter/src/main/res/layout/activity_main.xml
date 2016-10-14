@@ -3,20 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="wrap_content"
+        android:layout_height="500dp"
+        android:src="@drawable/mrc"/>
     <LinearLayout
-        android:id="@+id/"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_weight="1"
         android:orientation="horizontal">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/"/>
+
 
         <RadioGroup
+
             android:id="@+id/rg_bottom_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,7 +26,7 @@
 
             <RadioButton
                 android:id="@+id/jinxuan"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
@@ -34,17 +36,17 @@
 
 
             <RadioButton
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawableTop="@mipmap/menu_item_boutique_selected"
+                android:drawableTop="@mipmap/menu_item_category_normal"
                 android:textColor="@color/main_botton_text_color"
                 android:text="类别"
                 android:gravity="center_horizontal"/>
 
             <RadioButton
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
@@ -53,23 +55,25 @@
                 android:gravity="center_horizontal"/>
 
             <RadioButton
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawableTop="@mipmap/menu_item_boutique_normal"
+                android:drawableTop="@mipmap/menu_item_personal_center_normal"
                 android:text="个人中心"
                 android:gravity="center_horizontal"/>
             <RelativeLayout
+                android:layout_weight="1"
                 android:id="@+id/shopping_cart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+               >
                 <RadioButton
                     android:id="@+id/rb_id_cars"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:button="@null"
-                    android:drawableTop="@mipmap/menu_item_personal_center_normal"
+                    android:drawableTop="@mipmap/menu_item_cart_normal"
                     android:text="购物车"
                     android:textColor="@color/main_botton_text_color"
                     android:gravity="center_horizontal"/>

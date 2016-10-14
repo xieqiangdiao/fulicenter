@@ -1,28 +1,7 @@
 package cn.ucai.fulicenter.views;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-
-import cn.ucai.fulicenter.I;
 //import cn.ucai.fulicenter.activity.CategoryChildActivity;
-import cn.ucai.fulicenter.bean.CategoryChildBean;
-import cn.ucai.fulicenter.utils.ImageLoader;
+
 //import cn.ucai.fulicenter.utils.Utils;
 
 /**

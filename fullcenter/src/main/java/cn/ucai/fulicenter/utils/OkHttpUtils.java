@@ -1,6 +1,5 @@
 package cn.ucai.fulicenter.utils;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
@@ -21,8 +20,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
-import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.bean.Result;
+import cn.ucai.fulicenter.views.I;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
