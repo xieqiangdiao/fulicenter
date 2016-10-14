@@ -70,6 +70,7 @@ public class OkHttpUtils<T> {
      * 构造器，mOkHttpClient必须单例，无论创建多少个OkHttpUtils的实例。
      * 都由mOkHttpClient一个对象处理所有的网络请求。
      */
+/*
     public OkHttpUtils(Context context) {
         if (mOkHttpClient == null) {//线程安全的单例
             synchronized (OkHttpUtils.class) {
@@ -88,6 +89,7 @@ public class OkHttpUtils<T> {
         }
         initHandler();
     }
+*/
 
     /**
      * 设置与服务端连接的时限
@@ -144,7 +146,7 @@ public class OkHttpUtils<T> {
     }
 
 
-    private void initHandler() {
+   /* private void initHandler() {
         mHandler = new Handler(FuLiCenterApplication.applicationContext.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
@@ -159,7 +161,7 @@ public class OkHttpUtils<T> {
                 }
             }
         };
-    }
+    }*/
 
     /**
      * 用post请求，添加一个文件
@@ -421,14 +423,14 @@ public class OkHttpUtils<T> {
      * @param <T>
      * @return
      */
-    public <T> T parseJson(Result result, Class<?> clazz) {
+   /* public <T> T parseJson(Result result, Class<?> clazz) {
         if (result.getRetCode() == 0) {
             String json = result.getRetData().toString();
             T t = parseJson(json, clazz);
             return t;
         }
         return null;
-    }
+    }*/
 
     /**
      * 下载文件，支持更新下载进度
