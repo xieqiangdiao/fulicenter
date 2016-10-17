@@ -16,8 +16,6 @@ import cn.ucai.fulicenter.utils.L;
 import uai.cn.fullcenter.R;
 
 public class MainActivity extends AppCompatActivity {
-
-
     @Bind(R.id.iv)
     ImageView iv;
     @Bind(R.id.jinxuan)
@@ -26,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     RadioButton rbIdCars;
     @Bind(R.id.tv_id_car_hint)
     TextView tvIdCarHint;
-    @Bind(R.id.shopping_cart)
+    @Bind(R.id.shoppingCart)
     RelativeLayout shoppingCart;
     @Bind(R.id.rg_bottom_layout)
     RadioGroup rgBottomLayout;
