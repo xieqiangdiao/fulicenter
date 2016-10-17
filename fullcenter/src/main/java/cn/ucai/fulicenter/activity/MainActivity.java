@@ -2,32 +2,40 @@ package cn.ucai.fulicenter.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.utils.L;
 import uai.cn.fullcenter.R;
 
 public class MainActivity extends AppCompatActivity {
-    @Bind(R.id.iv)
-    ImageView iv;
-    @Bind(R.id.jinxuan)
-    RadioButton jinxuan;
-    @Bind(R.id.rb_id_cars)
-    RadioButton rbIdCars;
-    @Bind(R.id.tv_id_car_hint)
-    TextView tvIdCarHint;
-    @Bind(R.id.shoppingCart)
-    RelativeLayout shoppingCart;
+
+
+    @Bind(R.id.Boutique)
+    RadioButton Boutique;
+    @Bind(R.id.Category)
+    RadioButton Category;
+    @Bind(R.id.new_Goods)
+    RadioButton newGoods;
+    @Bind(R.id.Personal)
+    RadioButton Personal;
+    @Bind(R.id.Cars)
+    RadioButton Cars;
     @Bind(R.id.rg_bottom_layout)
     RadioGroup rgBottomLayout;
+    @Bind(R.id.tv_id_car_hint)
+    TextView tvIdCarHint;
+    @Bind(R.id.view)
+    View view;
+
+    NewGoodsFragment newGoodsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,24 +45,24 @@ public class MainActivity extends AppCompatActivity {
         L.i("MainActivity onCreate");
     }
 
-    public void onCheckedChange() {
 
-    }
-
-    @OnClick({R.id.iv, R.id.jinxuan, R.id.rb_id_cars, R.id.tv_id_car_hint, R.id.shopping_cart, R.id.rg_bottom_layout})
+    @OnClick({R.id.view, R.id.Boutique, R.id.Category, R.id.new_Goods, R.id.Personal, R.id.Cars})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv:
+
+            case R.id.Boutique:
                 break;
-            case R.id.jinxuan:
+            case R.id.Category:
                 break;
-            case R.id.rb_id_cars:
+            case R.id.new_Goods:
+                if(newGoodsFragment==null){
+                    newGoodsFragment=new NewGoodsFragment();
+                    getSupportFragmentManager().beginTransaction().add(R.id.fragment,newGoodsFragment).show(newGoodsFragment).commit();
+                }
                 break;
-            case R.id.tv_id_car_hint:
+            case R.id.Personal:
                 break;
-            case R.id.shopping_cart:
-                break;
-            case R.id.rg_bottom_layout:
+            case R.id.Cars:
                 break;
         }
     }
