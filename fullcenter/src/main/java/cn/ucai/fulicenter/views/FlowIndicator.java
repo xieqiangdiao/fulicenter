@@ -12,6 +12,7 @@ import uai.cn.fullcenter.R;
 
 public class FlowIndicator extends View {
 
+
     int mCount;//指示器中实心圆数量
     int mRadius;//实心圆半径
     int mSpace;//实心圆之前的距离
@@ -119,96 +120,3 @@ public class FlowIndicator extends View {
 
 }
 
-/**
- * 标识轮播图片的实心圆
- * @author yao
- */
-/*public class FlowIndicator extends View {
-    int mCount;
-    int mNormalColor;
-    int mFocusColor;
-    int mSpace;
-    int mRadius;
-    int mFocus;
-
-    public FlowIndicator(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        TypedArray array = context.obtainStyledAttributes(attrs,
-                R.styleable.FlowIndicator);
-        mNormalColor = array.getColor(R.styleable.FlowIndicator_normal_color,
-                0xffffff);
-        mFocusColor = array.getColor(R.styleable.FlowIndicator_focus_color,
-                0xffff07);
-        mSpace = array.getDimensionPixelOffset(R.styleable.FlowIndicator_space,
-                6);
-        mRadius = array.getDimensionPixelOffset(
-                R.styleable.FlowIndicator_r, 9);
-        mCount=array.getIndex(R.styleable.FlowIndicator_count);
-        mFocus=array.getInt(R.styleable.FlowIndicator_focus, 0);
-        array.recycle();
-    }
-
-    public void setCount(int count) {
-        mCount = count;
-        invalidate();
-    }
-
-    public int getCount() {
-        return mCount;
-    }
-
-    public void setFocus(int focus) {
-        mFocus = focus;
-        invalidate();
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(measureWidth(widthMeasureSpec),
-                measureHeight(heightMeasureSpec));
-    }
-
-    private int measureWidth(int widthMeasureSpce) {
-        int result = 0;
-        int specMode = MeasureSpec.getMode(widthMeasureSpce);
-        int specSize = MeasureSpec.getSize(widthMeasureSpce);
-        if (specMode == MeasureSpec.EXACTLY) {
-            result = specSize;
-        } else {
-            result = (int) (getLeftPaddingOffset()+ getRightFadingEdgeStrength() 
-                + mCount * 2 * mRadius + (mCount - 1) * mSpace);
-            result = Math.min(specSize, result);
-        }
-        return result;
-    }
-
-    private int measureHeight(int heightMeasureSpec) {
-        int result = 0;
-        int specMode = MeasureSpec.getMode(heightMeasureSpec);
-        int specSize = MeasureSpec.getSize(heightMeasureSpec);
-        if (specMode == MeasureSpec.EXACTLY) {
-            result = specSize;
-        } else {
-            result = (int) (getTopPaddingOffset()
-                    + getBottomFadingEdgeStrength() + 2 * mRadius);
-            result = Math.min(result, specSize);
-        }
-        return result;
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        int leftSpace = (getWidth() - mCount * 2 * (mRadius+mSpace) - (mCount - 1)
-                * mSpace) / 2;
-        for (int i = 0; i < mCount; i++) {
-            int color = i == mFocus ? mFocusColor : mNormalColor;
-            paint.setColor(color);
-            int x = getLeftPaddingOffset() + leftSpace + i
-                    * (2 * mRadius + mSpace) + mRadius;
-            canvas.drawCircle(x, getHeight() / 2, mRadius, paint);
-        }
-    }
-}*/
