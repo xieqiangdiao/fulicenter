@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="cn.ucai.fulicenter.activity.GoodsDetailsActivity">
+
+    <RelativeLayout
+        android:id="@+id/litile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_orange"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_toRightOf="@+id/iv1"
+            android:text="商品详情"
+            android:textColor="@color/white"
+            android:textSize="30dp" />
+
+        <ImageView
+            android:id="@+id/iv2"
+            android:layout_width="wrap_content"
+
+            android:layout_height="42dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/selector_share_bg" />
+
+        <ImageView
+            android:id="@+id/like"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/iv2"
+            android:src="@mipmap/bg_collect_out" />
+
+        <ImageView
+            android:id="@+id/car"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/like"
+
+            android:src="@drawable/selector_menu_item_cart" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlname"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/litile">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="abdandmna"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv1"
+            android:text="饭盒"
+            android:textSize="20dp" />
+
+        <cn.ucai.fulicenter.views.FlowIndicator
+            android:id="@+id/flowindicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            apps:count="6"
+            apps:focus="0"
+            apps:r="5dp"
+            apps:normal_color="@color/blue"
+            apps:focus_color="@color/red"
+            />
+    </RelativeLayout>
+
+
+</RelativeLayout>
