@@ -16,6 +16,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.bean.AlbumsBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.net.NetDao;
+import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
@@ -55,6 +56,8 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     RelativeLayout layoutImage;
     @Bind(R.id.wv_good_brief)
     WebView wvGoodBrief;
+    @Bind(R.id.goods_price)
+    TextView goods_price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,39 +83,30 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        NetDao.downloadGoodsDetail(context, goodsID, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean[]>() {
+        NetDao.downloadGoodsDetail(context, goodsID, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean>() {
             @Override
-            public void onSuccess(GoodsDetailsBean[] result) {
-
+            public void onSuccess(GoodsDetailsBean result) {
+                L.i("details=" + result);
+                if (result != null) {
+                    showGoodsDetails(result);
+                } else {
+                    finish();
+                }
             }
 
             @Override
             public void onError(String error) {
-
+                finish();
+                L.i("details,error=" + error);
+                CommonUtils.showShortToast(error);
             }
         });
-//            @Override
-//            public void onSuccess(Object result) {
-//                L.i("details=" + result);
-//                if (result != null) {
-//                    showGoodsDetails();
-//                } else {
-//                    finish();
-//                }
-//            }
-//
-//            @Override
-//            public void onError(String error) {
-//                finish();
-//                L.i("details,error=" + error);
-//                CommonUtils.showShortToast(error);
-//            }
-//        });
     }
 
     private void showGoodsDetails(GoodsDetailsBean details) {
         chinaname.setText(details.getGoodsName());
         englishname.setText(details.getGoodsEnglishName());
+        goods_price.setText(details.getCurrencyPrice());
         salv.startPlayLoop(indicator, getAlbumImgUrl(details), getAlbumImagCount(details));
         wvGoodBrief.loadDataWithBaseURL(null, details.getGoodsBrief(), I.TEXT_HTML, I.UTF_8, null);
     }
@@ -146,7 +140,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.iv_good_share, R.id.iv_good_collect, R.id.iv_good_like, R.id.iv_good_car, R.id.englishname, R.id.chinaname, R.id.salv, R.id.wv_good_brief})
+    @OnClick({R.id.iv_good_share, R.id.iv_good_collect, R.id.iv_good_like, R.id.iv_good_car, R.id.englishname, R.id.chinaname, R.id.salv, R.id.wv_good_brief,R.id.goods_price})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_good_share:
@@ -163,8 +157,9 @@ public class GoodsDetailsActivity extends AppCompatActivity {
                 break;
             case R.id.salv:
                 break;
-            case R.id.wv_good_brief:
+            case R.id.goods_price:
                 break;
+
         }
     }
 }
