@@ -80,7 +80,7 @@ public class NewGoodsFragment extends Fragment {
                 pageId=1;
                 srl.setRefreshing(true);
                 srl.setEnabled(true);
-                rv.setVisibility(View.GONE);
+                rv.setVisibility(View.VISIBLE);
                 mAdapter.setMore(false);
                 downloadNewGoods(I.ACTION_PULL_DOWN);
             }
@@ -105,7 +105,7 @@ public class NewGoodsFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int firstPostion=glm.findLastVisibleItemPosition();
+                int firstPostion=glm.findFirstCompletelyVisibleItemPosition();
                 srl.setEnabled(firstPostion==0);
             }
         });

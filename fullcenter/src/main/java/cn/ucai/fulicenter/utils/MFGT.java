@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import cn.ucai.fulicenter.activity.GoodsDetailsActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
+import cn.ucai.fulicenter.views.I;
 import uai.cn.fullcenter.R;
 
 
@@ -28,6 +29,7 @@ public class MFGT {
     public static void gotoGoodsDetailActivity(Context context, int goodId) {
         Intent intent = new Intent();
         intent.setClass(context, GoodsDetailsActivity.class);
+        intent.putExtra(I.GoodsDetails.KEY_GOODS_ID,goodId);
         startActivity(context, intent);
     }
 

@@ -13,4 +13,7 @@
         <attr name="focus_color" format="color|reference"/>
         <attr name="focus" format="integer"/>
     </declare-styleable>
+    <declare-styleable name="FocusView">
+
+    </declare-styleable>
 </resources>

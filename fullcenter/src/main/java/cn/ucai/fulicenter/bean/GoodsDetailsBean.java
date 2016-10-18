@@ -17,9 +17,13 @@ public class GoodsDetailsBean implements Serializable {
     private String rankPrice;
     private String goodsThumb;
     private String goodsImg;
+
+
+
     private long addTime;
     private String shareUrl;
     private boolean isPromote;
+    private  long goods_price;
     private PropertiesBean[] properties;
 
     public int getId() {
@@ -149,10 +153,18 @@ public class GoodsDetailsBean implements Serializable {
     public void setProperties(PropertiesBean[] properties) {
         this.properties = properties;
     }
+    public long getGoods_price() {
+        return goods_price;
+    }
+
+    public void setGoods_price(long goods_price) {
+        this.goods_price = goods_price;
+    }
+
 
     @Override
     public String toString() {
-        return "GoodDetailsBean{" +
+        return "GoodsDetailsBean{" +
                 "id=" + id +
                 ", goodsId=" + goodsId +
                 ", catId=" + catId +
@@ -167,7 +179,8 @@ public class GoodsDetailsBean implements Serializable {
                 ", goodsImg='" + goodsImg + '\'' +
                 ", addTime=" + addTime +
                 ", shareUrl='" + shareUrl + '\'' +
-                ", promote=" + isPromote +
+                ", isPromote=" + isPromote +
+                ", goods_price=" + goods_price +
                 ", properties=" + Arrays.toString(properties) +
                 '}';
     }
