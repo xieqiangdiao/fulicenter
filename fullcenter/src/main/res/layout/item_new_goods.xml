@@ -5,18 +5,20 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/mrc" />
+        android:id="@+id/iv"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@drawable/nopic"
+        />
 
     <TextView
-        android:id="@+id/good_id"
+        android:id="@+id/goods_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="商品名称" />
 
     <TextView
-        android:id="@+id/jiage"
+        android:id="@+id/goods_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="商品价格" />

@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
+import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.views.I;
 import uai.cn.fullcenter.R;
 
@@ -52,6 +54,7 @@ public class GoodAdapter extends RecyclerView.Adapter {
         NewGoodsBean goodsBean = mgoodlist.get(position);
         goodsViewHolder.goodsId.setText(goodsBean.getGoodsName());
         goodsViewHolder.goodsPrice.setText(goodsBean.getCurrencyPrice());
+        ImageLoader.downloadImg(mContext,goodsViewHolder.iv,goodsBean.getGoodsThumb());
     }
 
     @Override
@@ -65,6 +68,14 @@ public class GoodAdapter extends RecyclerView.Adapter {
             return I.TYPE_FOOTER;
         }
         return I.TYPE_ITEM;
+    }
+
+    public void initData(ArrayList<NewGoodsBean> list) {
+      if(mgoodlist!=null){
+          mgoodlist.clear();
+      }
+        mgoodlist.addAll(list);
+        notifyDataSetChanged();
     }
 
     static class FooterViewHolder extends RecyclerView.ViewHolder {

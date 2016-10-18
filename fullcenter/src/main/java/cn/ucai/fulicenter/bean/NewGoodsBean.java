@@ -43,7 +43,7 @@ public class NewGoodsBean {
     private String colorName;
     private String colorCode;
     private String colorUrl;
-    private int addTime;
+    private String addTime;
     private boolean promote;
 
     public int getId() {
@@ -126,12 +126,12 @@ public class NewGoodsBean {
         this.rankPrice = rankPrice;
     }
 
-    public boolean isIsPromote() {
+    public boolean isPromote() {
         return isPromote;
     }
 
-    public void setIsPromote(boolean isPromote) {
-        this.isPromote = isPromote;
+    public void setPromote(boolean promote) {
+        isPromote = promote;
     }
 
     public String getGoodsThumb() {
@@ -182,23 +182,12 @@ public class NewGoodsBean {
         this.colorUrl = colorUrl;
     }
 
-    public int getAddTime() {
+    public String getAddTime() {
         return addTime;
     }
 
-    public void setAddTime(int addTime) {
+    public void setAddTime(String addTime) {
         this.addTime = addTime;
-    }
-
-    public boolean isPromote() {
-        return promote;
-    }
-
-    public void setPromote(boolean promote) {
-        this.promote = promote;
-    }
-
-    public NewGoodsBean() {
     }
 
     @Override
@@ -221,7 +210,7 @@ public class NewGoodsBean {
                 ", colorName='" + colorName + '\'' +
                 ", colorCode='" + colorCode + '\'' +
                 ", colorUrl='" + colorUrl + '\'' +
-                ", addTime=" + addTime +
+                ", addTime='" + addTime + '\'' +
                 ", promote=" + promote +
                 '}';
     }

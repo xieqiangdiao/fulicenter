@@ -1,8 +1,8 @@
 package cn.ucai.fulicenter.utils;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-
 
 import com.google.gson.Gson;
 
@@ -19,7 +19,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import cn.ucai.fulicenter.FuLiCenterApplication;
 
+import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.views.I;
 import okhttp3.Cache;
 import okhttp3.Call;
@@ -68,7 +70,6 @@ public class OkHttpUtils<T> {
      * 构造器，mOkHttpClient必须单例，无论创建多少个OkHttpUtils的实例。
      * 都由mOkHttpClient一个对象处理所有的网络请求。
      */
-/*
     public OkHttpUtils(Context context) {
         if (mOkHttpClient == null) {//线程安全的单例
             synchronized (OkHttpUtils.class) {
@@ -87,7 +88,6 @@ public class OkHttpUtils<T> {
         }
         initHandler();
     }
-*/
 
     /**
      * 设置与服务端连接的时限
@@ -144,8 +144,8 @@ public class OkHttpUtils<T> {
     }
 
 
-   /* private void initHandler() {
-        mHandler = new Handler(FuLiCenterApplication.applicationContext.getMainLooper()) {
+    private void initHandler() {
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
@@ -159,7 +159,7 @@ public class OkHttpUtils<T> {
                 }
             }
         };
-    }*/
+    }
 
     /**
      * 用post请求，添加一个文件
@@ -421,14 +421,14 @@ public class OkHttpUtils<T> {
      * @param <T>
      * @return
      */
-   /* public <T> T parseJson(Result result, Class<?> clazz) {
+    public <T> T parseJson(Result result, Class<?> clazz) {
         if (result.getRetCode() == 0) {
             String json = result.getRetData().toString();
             T t = parseJson(json, clazz);
             return t;
         }
         return null;
-    }*/
+    }
 
     /**
      * 下载文件，支持更新下载进度

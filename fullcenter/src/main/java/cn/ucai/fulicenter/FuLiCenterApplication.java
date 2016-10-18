@@ -1,30 +1,27 @@
 package cn.ucai.fulicenter;
 
 import android.app.Application;
-import android.content.Context;
-import android.os.Looper;
+
 
 /**
  * Created by Administrator on 2016/10/13.
  */
 public class FuLiCenterApplication extends Application {
-    private static FuLiCenterApplication applicationContext;
-
+    public static FuLiCenterApplication applicationContext;
+    private static FuLiCenterApplication instance;
+ public FuLiCenterApplication(){
+     instance=this;
+  }
     @Override
-    public Looper getMainLooper() {
-        return super.getMainLooper();
+    public void onCreate() {
+        super.onCreate();
+        applicationContext=this;
+        instance=this;
     }
-
-    public FuLiCenterApplication() {
-        applicationContext = this;
-    }
-
     public static FuLiCenterApplication getInstance() {
-        if (applicationContext == null) {
-            applicationContext=new FuLiCenterApplication();
+        if (instance == null) {
+            instance=new FuLiCenterApplication();
         }
-        return applicationContext;
+        return instance;
     }
-
-
 }
