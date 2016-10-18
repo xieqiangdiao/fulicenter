@@ -20,6 +20,7 @@ import cn.ucai.fulicenter.activity.MainActivity;
 import cn.ucai.fulicenter.adapter.GoodAdapter;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.net.NetDao;
+import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
@@ -60,6 +61,7 @@ public class NewGoodsFragment extends Fragment {
 
         initView();
         initData();
+        setListener();
         return layout;
     }
 
@@ -68,23 +70,31 @@ public class NewGoodsFragment extends Fragment {
         NetDao.downloadNewGoods(mContext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
+                srl.setRefreshing(false);
+                relative.setVisibility(View.GONE);
+                mAdapter.setMore(true);
                 L.i("result=" + result);
                 if (result != null && result.length > 0) {
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
                     mAdapter.initData(list);
+                    if(list.size()<I.PAGE_SIZE_DEFAULT){
+                        mAdapter.setMore(false);
+                    }
                 }
 
             }
 
             @Override
             public void onError(String error) {
+                srl.setRefreshing(false);
+                relative.setVisibility(View.GONE);
+                CommonUtils.showShortToast(error);
                 L.e("error:" + error);
             }
         });
     }
 
     private void initView() {
-
         srl.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),
@@ -95,7 +105,6 @@ public class NewGoodsFragment extends Fragment {
         rv.setLayoutManager(glm);
         rv.setHasFixedSize(true);
         rv.setAdapter(mAdapter);
-
     }
 
     @Override
