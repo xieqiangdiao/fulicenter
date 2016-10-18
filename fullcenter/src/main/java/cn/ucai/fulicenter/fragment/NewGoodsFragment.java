@@ -36,6 +36,8 @@ public class NewGoodsFragment extends Fragment {
     GoodAdapter mAdapter;
     ArrayList<NewGoodsBean> mlist;
 
+    GridLayoutManager glm;
+
     int pageId = 1;
     @Bind(R.id.srl)
     SwipeRefreshLayout srl;
@@ -65,8 +67,48 @@ public class NewGoodsFragment extends Fragment {
         return layout;
     }
 
-    //下载数据
-    private void initData() {
+    private void setListener() {
+        setPullUpListener();
+        setPullDownListener();
+    }
+
+    private void setPullDownListener() {
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                srl.setRefreshing(true);
+                rv.setVisibility(View.GONE);
+                mAdapter.setMore(false);
+                downloadNewGoods(I.ACTION_PULL_DOWN);
+            }
+        });
+    }
+
+    private void setPullUpListener() {
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastPostion = glm.findLastVisibleItemPosition();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastPostion ==mAdapter.getItemCount() - 1
+                        && mAdapter.isMore()) {
+                    pageId++;
+                    downloadNewGoods(I.ACTION_PULL_UP);
+
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstPostion=glm.findLastVisibleItemPosition();
+                srl.setEnabled(firstPostion==0);
+            }
+        });
+    }
+
+    private void downloadNewGoods(final int action) {
         NetDao.downloadNewGoods(mContext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
@@ -77,11 +119,17 @@ public class NewGoodsFragment extends Fragment {
                 if (result != null && result.length > 0) {
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
                     mAdapter.initData(list);
-                    if(list.size()<I.PAGE_SIZE_DEFAULT){
+                    if(action==I.ACTION_DOWNLOAD||action==I.ACTION_PULL_DOWN){
+                        mAdapter.initData(list);
+                    }else{
+                        mAdapter.addData(list);
+                    }
+                    if (list.size() < I.PAGE_SIZE_DEFAULT) {
+                        mAdapter.setMore(false);
+                    }else{
                         mAdapter.setMore(false);
                     }
                 }
-
             }
 
             @Override
@@ -92,6 +140,11 @@ public class NewGoodsFragment extends Fragment {
                 L.e("error:" + error);
             }
         });
+    }
+
+    //下载数据
+    private void initData() {
+        downloadNewGoods(I.ACTION_DOWNLOAD);
     }
 
     private void initView() {
