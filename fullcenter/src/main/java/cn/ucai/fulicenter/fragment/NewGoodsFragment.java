@@ -76,7 +76,9 @@ public class NewGoodsFragment extends Fragment {
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                pageId=1;
                 srl.setRefreshing(true);
+                srl.setEnabled(true);
                 rv.setVisibility(View.GONE);
                 mAdapter.setMore(false);
                 downloadNewGoods(I.ACTION_PULL_DOWN);
@@ -127,7 +129,7 @@ public class NewGoodsFragment extends Fragment {
                     if (list.size() < I.PAGE_SIZE_DEFAULT) {
                         mAdapter.setMore(false);
                     }else{
-                        mAdapter.setMore(false);
+                        mAdapter.setMore(true);
                     }
                 }
             }
@@ -154,7 +156,7 @@ public class NewGoodsFragment extends Fragment {
                 getResources().getColor(R.color.google_red),
                 getResources().getColor(R.color.google_yellow)
         );
-        GridLayoutManager glm = new GridLayoutManager(mContext, I.COLUM_NUM);
+        glm = new GridLayoutManager(mContext, I.COLUM_NUM);
         rv.setLayoutManager(glm);
         rv.setHasFixedSize(true);
         rv.setAdapter(mAdapter);
