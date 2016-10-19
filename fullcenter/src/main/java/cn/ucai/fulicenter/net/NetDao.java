@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.net;
 
 import android.content.Context;
 
+import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
@@ -11,6 +12,7 @@ import cn.ucai.fulicenter.views.I;
  * Created by Administrator on 2016/10/17.
  */
 public class NetDao {
+   //请求网络
     public static void downloadNewGoods(Context context, int pageId, OkHttpUtils.OnCompleteListener<NewGoodsBean[]> listener) {
         OkHttpUtils<NewGoodsBean[]> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
@@ -28,6 +30,12 @@ public class NetDao {
                 .targetClass(GoodsDetailsBean.class)
                 .execute(listener);
 
+    }
+    public  static void downloadBuotique(Context context, OkHttpUtils.OnCompleteListener<BoutiqueBean[]> listener){
+        OkHttpUtils<BoutiqueBean[]> utils=new OkHttpUtils(context);
+        utils.setRequestUrl(I.REQUEST_FIND_BOUTIQUES)
+                .targetClass(BoutiqueBean[].class)
+                .execute(listener);
     }
 
 }
