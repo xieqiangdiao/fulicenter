@@ -31,7 +31,7 @@ import uai.cn.fullcenter.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewGoodsFragment extends Fragment {
+public class NewGoodsFragment extends BaseFragment {
 
     MainActivity mContext;
     GoodAdapter mAdapter;
@@ -56,19 +56,21 @@ public class NewGoodsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        L.e("NewGoodsFragment.onCreateView");
         View layout = inflater.inflate(R.layout.fragment_new_goods, container, false);
         ButterKnife.bind(this, layout);
         mContext = (MainActivity) getContext();
         mlist = new ArrayList<>();
         mAdapter = new GoodAdapter(mContext, mlist);
-
-        initView();
+        super.onCreateView(inflater, container, savedInstanceState);
+      /*  initView();
         initData();
-        setListener();
+        setListener();*/
         return layout;
     }
 
-    private void setListener() {
+    @Override
+    protected void setListener() {
         setPullUpListener();
         setPullDownListener();
     }
@@ -77,7 +79,7 @@ public class NewGoodsFragment extends Fragment {
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                pageId=1;
+                pageId = 1;
                 srl.setRefreshing(true);
                 srl.setEnabled(true);
                 rv.setVisibility(View.VISIBLE);
@@ -94,7 +96,7 @@ public class NewGoodsFragment extends Fragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 int lastPostion = glm.findLastVisibleItemPosition();
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastPostion ==mAdapter.getItemCount() - 1
+                        && lastPostion == mAdapter.getItemCount() - 1
                         && mAdapter.isMore()) {
                     pageId++;
                     downloadNewGoods(I.ACTION_PULL_UP);
@@ -105,8 +107,8 @@ public class NewGoodsFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int firstPostion=glm.findFirstCompletelyVisibleItemPosition();
-                srl.setEnabled(firstPostion==0);
+                int firstPostion = glm.findFirstCompletelyVisibleItemPosition();
+                srl.setEnabled(firstPostion == 0);
             }
         });
     }
@@ -122,14 +124,14 @@ public class NewGoodsFragment extends Fragment {
                 if (result != null && result.length > 0) {
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
                     mAdapter.initData(list);
-                    if(action==I.ACTION_DOWNLOAD||action==I.ACTION_PULL_DOWN){
+                    if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                         mAdapter.initData(list);
-                    }else{
+                    } else {
                         mAdapter.addData(list);
                     }
                     if (list.size() < I.PAGE_SIZE_DEFAULT) {
                         mAdapter.setMore(false);
-                    }else{
+                    } else {
                         mAdapter.setMore(true);
                     }
                 }
@@ -146,11 +148,13 @@ public class NewGoodsFragment extends Fragment {
     }
 
     //下载数据
-    private void initData() {
+    @Override
+    protected  void initData() {
         downloadNewGoods(I.ACTION_DOWNLOAD);
     }
 
-    private void initView() {
+    @Override
+    protected  void initView() {
         srl.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),

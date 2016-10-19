@@ -115,11 +115,15 @@ public class BoutiqueFragment extends BaseFragment {
         NetDao.downloadBuotique(mContext, new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>() {
             @Override
             public void onSuccess(BoutiqueBean[] result) {
+                srl.setRefreshing(false);
+                relative.setVisibility(View.GONE);
+                srl.setEnabled(true);
                 Log.i("main",result.toString());
                 if (result != null && result.length > 0) {
                     ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
                     if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                         mAdapter.initData(list);
+
                     }else{
                         mAdapter.addData(list);
                     }

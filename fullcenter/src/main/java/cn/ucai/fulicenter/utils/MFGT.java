@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import cn.ucai.fulicenter.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.activity.GoodsDetailsActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
 import cn.ucai.fulicenter.views.I;
@@ -26,15 +27,21 @@ public class MFGT {
         startActivity(context, intent);
     }
 
-    public static void gotoGoodsDetailActivity(Context context, int goodId) {
+    public static void gotoGoodsDetailActivity(Context context, int catid) {
         Intent intent = new Intent();
         intent.setClass(context, GoodsDetailsActivity.class);
-        intent.putExtra(I.GoodsDetails.KEY_GOODS_ID,goodId);
+        intent.putExtra(I.GoodsDetails.KEY_GOODS_ID,catid);
         startActivity(context, intent);
     }
 
     public static void startActivity(Context context, Intent intent) {
         context.startActivity(intent);
         ((Activity)context).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+    public static void gotoBoutiqueActivity(Context context, int catId) {
+        Intent intent = new Intent();
+        intent.setClass(context, BoutiqueChildActivity.class);
+        intent.putExtra(I.Boutique.CAT_ID,catId);
+        startActivity(context, intent);
     }
 }

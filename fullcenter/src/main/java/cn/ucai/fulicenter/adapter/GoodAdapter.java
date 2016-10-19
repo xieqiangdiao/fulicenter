@@ -3,6 +3,7 @@ package cn.ucai.fulicenter.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -66,11 +67,16 @@ public class GoodAdapter extends RecyclerView.Adapter {
             return;
         } else {
             GoodsViewHolder goodsViewHolder = (GoodsViewHolder) holder;
-            NewGoodsBean goodsBean = mgoodlist.get(position);
+            final NewGoodsBean goodsBean = mgoodlist.get(position);
             goodsViewHolder.goodsId.setText(goodsBean.getGoodsName());
             goodsViewHolder.goodsPrice.setText(goodsBean.getCurrencyPrice());
             ImageLoader.downloadImg(mContext, goodsViewHolder.iv, goodsBean.getGoodsThumb());
-            goodsViewHolder.goods_item.setTag(goodsBean.getGoodsId());
+            goodsViewHolder.goods_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MFGT.gotoGoodsDetailActivity(mContext,goodsBean.getGoodsId());
+                }
+            });
         }
     }
 
@@ -129,13 +135,5 @@ public class GoodAdapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this, view);
         }
-
-        @OnClick(R.id.goods_item)
-            public void onGoodsItemClick () {
-                int goodsId = (int) goods_item.getTag();
-           /* mContext.startActivity(new Intent(mContext,GoodsDetailsActivity.class)
-            .putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId));*/
-            MFGT.gotoGoodsDetailActivity(mContext,goodsId);
-            }
         }
 }
