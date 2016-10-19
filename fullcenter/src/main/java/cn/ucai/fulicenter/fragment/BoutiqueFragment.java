@@ -61,6 +61,46 @@ public class BoutiqueFragment extends Fragment {
     }
 
     private void setListener() {
+        setPullUpListener();
+        setPullDownListener();
+    }
+
+    private void setPullDownListener() {
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pageId=1;
+                srl.setRefreshing(true);
+                srl.setEnabled(true);
+                rv.setVisibility(View.VISIBLE);
+                mAdapter.setMore(false);
+                downloadBoutique(I.ACTION_PULL_DOWN);
+            }
+        });
+    }
+
+    private void setPullUpListener() {
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastPostion = glm.findLastVisibleItemPosition();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastPostion ==mAdapter.getItemCount() - 1
+                        && mAdapter.isMore()) {
+                    pageId++;
+                    downloadBoutique(I.ACTION_PULL_UP);
+
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstPostion=glm.findFirstCompletelyVisibleItemPosition();
+                srl.setEnabled(firstPostion==0);
+            }
+        });
     }
 
     private void initData() {
