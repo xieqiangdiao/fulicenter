@@ -22,6 +22,7 @@ import cn.ucai.fulicenter.adapter.BoutiqueAdapter;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.ConvertUtils;
+import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.views.I;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
@@ -30,7 +31,7 @@ import uai.cn.fullcenter.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BoutiqueFragment extends Fragment {
+public class BoutiqueFragment extends BaseFragment {
     MainActivity mContext;
     BoutiqueAdapter mAdapter;
     ArrayList<BoutiqueBean> mList;
@@ -49,18 +50,20 @@ public class BoutiqueFragment extends Fragment {
     @Override
     public View onCreateView(@Nullable LayoutInflater inflater, @Nullable ViewGroup container,
                              Bundle savedInstanceState) {
+        L.e("BoutiqueFragment.onCreateView");
         View layout = inflater.inflate(R.layout.fragment_boutique, container, false);
         ButterKnife.bind(this, layout);
         mList = new ArrayList<>();
         mContext = (MainActivity) getContext();
         mAdapter = new BoutiqueAdapter(mContext, mList);
-        initView();
+        /*initView();
         initData();
-        setListener();
+        setListener();*/
+        super.onCreateView(inflater, container, savedInstanceState);
         return layout;
     }
-
-    private void setListener() {
+    @Override
+    protected  void setListener() {
         setPullUpListener();
         setPullDownListener();
     }
@@ -103,7 +106,8 @@ public class BoutiqueFragment extends Fragment {
         });
     }
 
-    private void initData() {
+    @Override
+    protected void initData() {
         downloadBoutique(I.ACTION_DOWNLOAD);
     }
 
@@ -135,7 +139,8 @@ public class BoutiqueFragment extends Fragment {
         });
     }
 
-    private void initView() {
+    @Override
+    protected  void initView() {
       srl.setColorSchemeColors(
               getResources().getColor(R.color.google_blue),
               getResources().getColor(R.color.google_green),
