@@ -59,11 +59,9 @@ public class MainActivity extends AppCompatActivity {
         mFragment[1] = new BoutiqueFragment();
     }
 
-
     @OnClick({R.id.view, R.id.Boutique, R.id.Category, R.id.new_Goods, R.id.Personal, R.id.Cars})
     public void onClick(View view) {
         switch (view.getId()) {
-
             case R.id.Boutique:
                 index=1;
                 break;
@@ -79,9 +77,8 @@ public class MainActivity extends AppCompatActivity {
         }
         setFragment();
     }
-
+//fragment切换优化
     private void setFragment() {
-
         if (index != currentIndex) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             if (currentIndex<5){
@@ -101,4 +98,8 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         ButterKnife.unbind(this);
     }
+    public void onBackPressed(){
+        finish();
+    }
+
 }

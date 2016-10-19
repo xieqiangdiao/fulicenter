@@ -1,8 +1,10 @@
 package cn.ucai.fulicenter.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -25,7 +27,7 @@ import cn.ucai.fulicenter.views.I;
 import cn.ucai.fulicenter.views.SlideAutoLoopView;
 import uai.cn.fullcenter.R;
 
-public class GoodsDetailsActivity extends AppCompatActivity {
+public class GoodsDetailsActivity extends BaseActivity {
 
 
     Context context;
@@ -59,41 +61,49 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     @Bind(R.id.goods_price)
     TextView goods_price;
 
+
+    int pageId = 1;
+    int pageSize = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_goods_details);
+        L.e("GoodsDetailsActivity.onCreateView");
         ButterKnife.bind(this);
-        goodsID = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
+        Intent intent = getIntent();
+        goodsID = intent.getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
         L.e("detatils", "goodsid=" + goodsID);
+        super.onCreate(savedInstanceState);
+        context = this;
         if (goodsID == 0) {
-            context = this;
             finish();
         }
         initView();
         initData();
         setListener();
     }
-
-    private void initView() {
+    @Override
+    protected void initView() {
     }
 
-    private void setListener() {
+    @Override
+    protected  void setListener() {
 
     }
-
-    private void initData() {
-        NetDao.downloadGoodsDetail(context, goodsID, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean>() {
+    @Override
+    protected  void initData() {
+        NetDao.downloadGoodsDetail(context, goodsID, pageId, pageSize, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean>() {
             @Override
             public void onSuccess(GoodsDetailsBean result) {
+                Log.i("main", "onGoodsItemClick: "+goodsID);
                 L.i("details=" + result);
                 if (result != null) {
                     showGoodsDetails(result);
                 } else {
-                    finish();
+                   /* finish();*/
                 }
             }
-
             @Override
             public void onError(String error) {
                 finish();
@@ -159,7 +169,6 @@ public class GoodsDetailsActivity extends AppCompatActivity {
                 break;
             case R.id.goods_price:
                 break;
-
         }
     }
 }
