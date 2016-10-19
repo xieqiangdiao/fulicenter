@@ -35,7 +35,7 @@ public class GoodAdapter extends RecyclerView.Adapter {
         this.mgoodlist = mList;
     }
 
-    public boolean isMore() {
+      public boolean isMore() {
         return isMore;
     }
 
@@ -136,7 +136,6 @@ public class GoodAdapter extends RecyclerView.Adapter {
            /* mContext.startActivity(new Intent(mContext,GoodsDetailsActivity.class)
             .putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId));*/
             MFGT.gotoGoodsDetailActivity(mContext,goodsId);
-
             }
         }
 }
