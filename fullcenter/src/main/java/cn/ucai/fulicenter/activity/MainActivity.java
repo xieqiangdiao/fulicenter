@@ -17,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.fragment.BoutiqueFragment;
+import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.utils.L;
 import uai.cn.fullcenter.R;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     NewGoodsFragment newGoodsFragment;
     BoutiqueFragment boutiqueFragment;
+    CategoryFragment categoryFragment;
 
     int index;
     int currentIndex=8;
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         L.i("MainActivity onCreate");
         mFragment[0] = new NewGoodsFragment();
         mFragment[1] = new BoutiqueFragment();
+        mFragment[2] = new CategoryFragment();
+
     }
 
     @OnClick({R.id.view, R.id.Boutique, R.id.Category, R.id.new_Goods, R.id.Personal, R.id.Cars})
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 index=1;
                 break;
             case R.id.Category:
+                index=2;
                 break;
             case R.id.new_Goods:
                 index=0;

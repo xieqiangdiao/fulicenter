@@ -1,7 +1,7 @@
 package cn.ucai.fulicenter.activity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,11 +18,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.adapter.GoodAdapter;
-import cn.ucai.fulicenter.bean.CategoryGroupBean;
+import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
+import cn.ucai.fulicenter.views.CatChildFilterButton;
 import cn.ucai.fulicenter.views.I;
 import uai.cn.fullcenter.R;
 
@@ -37,14 +38,9 @@ public class CategoryActivity extends AppCompatActivity {
     int pageId = 1;
     int catId;
 
-    boolean addTimeAsc = false;
-    boolean priceAsc = false;
-    int sortBy = I.SORT_BY_ADDTIME_DESC;
 
     @Bind(R.id.backClickArea)
     LinearLayout backClickArea;
-    @Bind(R.id.tv_Common_title)
-    TextView tvCommonTitle;
     @Bind(R.id.relative)
     TextView relative;
     @Bind(R.id.rv)
@@ -59,19 +55,15 @@ public class CategoryActivity extends AppCompatActivity {
     @Bind(R.id.btn_sort_addtime)
     Button btnSortAddtime;
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-//        setContentView(R.layout.activity_category);
-//        ButterKnife.bind(this);
-//        mContext = this;
-//        mlist = new ArrayList<>();
-//        mAdapter = new GoodAdapter(mContext, mlist);
-//        catId = getIntent().getIntExtra(I.CategoryChild.CAT_ID, 0);
-//        if (catId == 0) {
-//            finish();
-//        }
-//        super.onCreate(savedInstanceState, persistentState);
-//    }
+    boolean addTimeAsc = false;
+    boolean PriceAsc = false;
+    int sortBy = I.SORT_BY_ADDTIME_DESC;
+    @Bind(R.id.btnCatChildFilter)
+    CatChildFilterButton btnCatChildFilter;
+    String groupName;
+    ArrayList<CategoryChildBean> mChildList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +77,9 @@ public class CategoryActivity extends AppCompatActivity {
         if (catId == 0) {
             finish();
         }
+        groupName=getIntent().getStringExtra(I.CategoryGroup.NAME);
+        mChildList= (ArrayList<CategoryChildBean>) getIntent().getSerializableExtra(I.CategoryChild.ID);
+
         initView();
         initData();
         setListener();
@@ -101,17 +96,21 @@ public class CategoryActivity extends AppCompatActivity {
         rv.setLayoutManager(glm);
         rv.setHasFixedSize(true);
         rv.setAdapter(mAdapter);
+        btnCatChildFilter.setText(groupName);
+
     }
+
     protected void initData() {
         downloadCategoryGoods(I.ACTION_DOWNLOAD);
+        btnCatChildFilter.setOnCatFilterClickListener(groupName,mChildList);
     }
 
 
     private void downloadCategoryGoods(final int action) {
-        NetDao.downloadCategoryGoods(this, catId,pageId,  new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
+        NetDao.downloadCategoryGoods(this, catId, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
-                Log.i("main", "oncreate: "+catId);
+                Log.i("main", "oncreate: " + catId);
                 Log.i("main", result[0].toString());
                 if (result != null && result.length > 0) {
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
@@ -130,7 +129,7 @@ public class CategoryActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                Log.i("main", "onError: "+error);
+                Log.i("main", "onError: " + error);
                 srl.setRefreshing(false);
                 relative.setVisibility(View.GONE);
                 mAdapter.setMore(false);
@@ -144,23 +143,36 @@ public class CategoryActivity extends AppCompatActivity {
 
     @OnClick({R.id.btn_sort_price, R.id.btn_sort_addtime})
     public void onClick(View view) {
+        Drawable right;
         switch (view.getId()) {
             case R.id.btn_sort_price:
-                if(priceAsc) {
+                if (PriceAsc) {
                     sortBy = I.SORT_BY_ADDTIME_ASC;
-                }else{
-                    sortBy=I.SORT_BY_ADDTIME_DESC;
+                    right = getResources().getDrawable(R.mipmap.arrow_order_up);
+                } else {
+                    sortBy = I.SORT_BY_ADDTIME_DESC;
+                    right = getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
-                priceAsc=!priceAsc;
+                right.setBounds(0, 0, right.getIntrinsicWidth(), right.getIntrinsicHeight());
+                btnSortPrice.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, right, null);
+                PriceAsc = !PriceAsc;
                 break;
             case R.id.btn_sort_addtime:
-                if(addTimeAsc){
-                   sortBy=I.SORT_BY_ADDTIME_ASC;
-                }else {
-                    sortBy=I.SORT_BY_ADDTIME_DESC;
+                if (addTimeAsc) {
+                    sortBy = I.SORT_BY_ADDTIME_ASC;
+                    right = getResources().getDrawable(R.mipmap.arrow_order_up);
+                } else {
+                    sortBy = I.SORT_BY_ADDTIME_DESC;
+                    right = getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
-                addTimeAsc=!addTimeAsc;
+                right.setBounds(0, 0, right.getIntrinsicWidth(), right.getIntrinsicHeight());
+                btnSortAddtime.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, right, null);
+                addTimeAsc = !addTimeAsc;
                 break;
         }
+    }
+
+    @OnClick(R.id.btnCatChildFilter)
+    public void onClick() {
     }
 }

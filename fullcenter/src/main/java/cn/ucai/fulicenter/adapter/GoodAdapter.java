@@ -141,6 +141,7 @@ public class GoodAdapter extends RecyclerView.Adapter {
                         result =getPrice(left.getCurrencyPrice())-getPrice(right.getCurrencyPrice());
                         break;
                     case I.SORT_BY_PRICE_DESC:
+                        result =getPrice(right.getCurrencyPrice())-getPrice(left.getCurrencyPrice());
                         break;
 
                 }
