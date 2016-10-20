@@ -8,15 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.activity.GoodsDetailsActivity;
+import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.MFGT;
@@ -31,12 +35,21 @@ public class GoodAdapter extends RecyclerView.Adapter {
     List<NewGoodsBean> mgoodlist;
     boolean isMore;
 
+    int sortBy = I.SORT_BY_ADDTIME_DESC;
+
     public GoodAdapter(Context mContext, List<NewGoodsBean> mList) {
         this.mContext = mContext;
         this.mgoodlist = mList;
     }
 
-      public boolean isMore() {
+    //排序
+    public void setSortBy(int soryBy) {
+        this.sortBy = soryBy;
+        sortBy();
+        notifyDataSetChanged();
+    }
+
+    public boolean isMore() {
         return isMore;
     }
 
@@ -74,7 +87,7 @@ public class GoodAdapter extends RecyclerView.Adapter {
             goodsViewHolder.goods_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MFGT.gotoGoodsDetailActivity(mContext,goodsBean.getGoodsId());
+                    MFGT.gotoGoodsDetailActivity(mContext, goodsBean.getGoodsId());
                 }
             });
         }
@@ -93,6 +106,7 @@ public class GoodAdapter extends RecyclerView.Adapter {
         return I.TYPE_ITEM;
     }
 
+
     public void initData(ArrayList<NewGoodsBean> list) {
         if (mgoodlist != null) {
             mgoodlist.clear();
@@ -102,12 +116,42 @@ public class GoodAdapter extends RecyclerView.Adapter {
     }
 
     public int getFootString() {
+
         return isMore ? R.string.load_more : R.string.no_more;
     }
 
     public void addData(ArrayList<NewGoodsBean> list) {
         mgoodlist.addAll(list);
         notifyDataSetChanged();
+    }
+
+    private void sortBy() {
+        Collections.sort(mgoodlist, new Comparator<NewGoodsBean>() {
+            @Override
+            public int compare(NewGoodsBean left, NewGoodsBean right) {
+                int result=0;
+                switch (sortBy) {
+                    case I.SORT_BY_ADDTIME_ASC:
+                        result = (int) (Long.valueOf(left.getAddTime()) - Long.valueOf(right.getAddTime()));
+                        break;
+                    case I.SORT_BY_ADDTIME_DESC:
+                        result = (int) (Long.valueOf(right.getAddTime()) - Long.valueOf(left.getAddTime()));
+                        break;
+                    case I.SORT_BY_PRICE_ASC:
+                        result =getPrice(left.getCurrencyPrice())-getPrice(right.getCurrencyPrice());
+                        break;
+                    case I.SORT_BY_PRICE_DESC:
+                        break;
+
+                }
+                return result;
+            }
+
+            private int getPrice(String price) {
+                price = price.substring(price.indexOf("¥") + 1);
+                return Integer.valueOf(price);
+            }
+        });
     }
 
     static class FooterViewHolder extends RecyclerView.ViewHolder {
@@ -119,7 +163,6 @@ public class GoodAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
     }
-
 
     static class GoodsViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv)
@@ -135,5 +178,5 @@ public class GoodAdapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this, view);
         }
-        }
+    }
 }
