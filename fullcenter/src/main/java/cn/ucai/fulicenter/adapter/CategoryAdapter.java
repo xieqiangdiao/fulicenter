@@ -75,7 +75,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View view, ViewGroup parent) {
         GroupViewHolder holder;
         if (view == null) {
-            view = view.inflate(mContext, R.layout.item_category_group, null);
+            view = View.inflate(mContext, R.layout.item_category_group, null);
             holder = new GroupViewHolder(view);
             view.setTag(holder);
         } else {
@@ -103,7 +103,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         }
         CategoryChildBean child = (CategoryChildBean) getChild(groupPosition, childPosition);
         if (child != null) {
-            ImageLoader.downloadImg(mContext, holder.ivGroupThumb, child.getImageUrl());
+            ImageLoader.downloadImg(mContext, holder.ivChildGroupThumb, child.getImageUrl());
             holder.tvGroupName.setText(child.getName());
         }
         return view;
@@ -128,12 +128,12 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     }
 
     static class ChildViewHolder {
-        @Bind(R.id.iv_group_thumb)
-        ImageView ivGroupThumb;
+        @Bind(R.id.iv_child_group_thumb)
+        ImageView ivChildGroupThumb;
         @Bind(R.id.tv_group_name)
         TextView tvGroupName;
-        @Bind(R.id.iv_indicator)
-        ImageView ivIndicator;
+        @Bind(R.id.iv_child_indicator)
+        ImageView ivChildIndicator;
 
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);
