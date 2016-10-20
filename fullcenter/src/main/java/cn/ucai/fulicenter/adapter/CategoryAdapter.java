@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -114,7 +115,21 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    static class GroupViewHolder {
+    public void initData(ArrayList<CategoryGroupBean> mGroupList, ArrayList<ArrayList<CategoryChildBean>> mChildList) {
+        if (mGroupList != null) {
+            mGroupList.clear();
+
+        }
+        mGroupList.addAll(mGroupList);
+        if (mChildList != null) {
+            mChildList.clear();
+
+        }
+        mChildList.addAll(mChildList);
+        notifyDataSetChanged();
+    }
+
+    static class GroupViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_group_thumb)
         ImageView ivGroupThumb;
         @Bind(R.id.tv_group_name)
@@ -123,11 +138,12 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         ImageView ivIndicator;
 
         GroupViewHolder(View view) {
+            super(view);
             ButterKnife.bind(this, view);
         }
     }
 
-    static class ChildViewHolder {
+    static class ChildViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_child_group_thumb)
         ImageView ivChildGroupThumb;
         @Bind(R.id.tv_group_name)
@@ -136,6 +152,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         ImageView ivChildIndicator;
 
         ChildViewHolder(View view) {
+            super(view);
             ButterKnife.bind(this, view);
         }
     }
