@@ -20,14 +20,14 @@ import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.views.DisplayUtils;
 import uai.cn.fullcenter.R;
 
 public class RegisterActivity extends BaseActivity {
 
-    @Bind(R.id.iv_title)
-    ImageView ivTitle;
+
     @Bind(R.id.tv_login)
     TextView tvLogin;
     @Bind(R.id.rv)
@@ -52,26 +52,28 @@ public class RegisterActivity extends BaseActivity {
     Button btnRegister;
 
     RegisterActivity mContext;
-    String name = etLoginName.getText().toString().trim();
-    String nick = etNiChen.getText().toString().trim();
-    String password = etPasWord.getText().toString().trim();
-    String cpassword = etCpassWord.getText().toString().trim();
+    @Bind(R.id.iv_title)
+    ImageView ivTitle;
+//    String mName = etLoginName.getText().toString().trim();
+//    String nick = etNiChen.getText().toString().trim();
+//    String password = etPasWord.getText().toString().trim();
+//    String cpassword = etCpassWord.getText().toString().trim();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        mContext = this;
     }
 
     @Override
     protected void initView() {
-        DisplayUtils.initBackWithTitle(this,"账户注册");
+        DisplayUtils.initBackWithTitle(this, "账户注册");
     }
 
     @Override
     protected void initData() {
-
     }
 
     @Override
@@ -79,9 +81,12 @@ public class RegisterActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.et_loginName, R.id.etNiChen, R.id.etPasWord, R.id.etCpassWord, R.id.btn_register})
+    @OnClick({R.id.et_loginName, R.id.etNiChen, R.id.etPasWord, R.id.etCpassWord, R.id.btn_register,R.id.iv_title})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_title:
+                MFGT.finish(this);
+                break;
             case R.id.et_loginName:
                 break;
             case R.id.etNiChen:
@@ -91,26 +96,26 @@ public class RegisterActivity extends BaseActivity {
             case R.id.etCpassWord:
                 break;
             case R.id.btn_register:
-                if (TextUtils.isEmpty(name)) {
+                if (TextUtils.isEmpty(etLoginName.getText().toString().trim())) {
                     CommonUtils.showShortToast(R.string.user_name_connot_be_empty);
                     return;
-                } else if (!name.matches("[a-zA]\\{5,15}")) {
+                } else if (!etLoginName.getText().toString().trim().matches("[a-zA-Z]\\w{5,15}")) {
                     CommonUtils.showShortToast(R.string.illegal_user_name);
                     etLoginName.requestFocus();
                     return;
-                } else if (TextUtils.isEmpty(nick)) {
+                } else if (TextUtils.isEmpty(etNiChen.getText().toString().trim())) {
                     CommonUtils.showShortToast(R.string.nick_name_connot_be_empty);
                     etLoginName.requestFocus();
                     return;
-                } else if (TextUtils.isEmpty(password)) {
+                } else if (TextUtils.isEmpty(etPasWord.getText().toString().trim())) {
                     CommonUtils.showShortToast(R.string.password_connot_be_empty);
                     etLoginName.requestFocus();
                     return;
-                } else if (TextUtils.isEmpty(cpassword)) {
+                } else if (TextUtils.isEmpty(etCpassWord.getText().toString())) {
                     CommonUtils.showShortToast(R.string.confirm_password_connot_be_empty);
                     etLoginName.requestFocus();
                     return;
-                } else if (TextUtils.isEmpty(cpassword)) {
+                } else if (TextUtils.isEmpty(etCpassWord.getText().toString())) {
                     CommonUtils.showShortToast(R.string.two_input_password);
                     etLoginName.requestFocus();
                     return;
@@ -122,28 +127,38 @@ public class RegisterActivity extends BaseActivity {
     public void register() {
 
         final ProgressDialog pd = new ProgressDialog(mContext);
+        String mName = etLoginName.getText().toString().trim();
+        String nick = etNiChen.getText().toString().trim();
+        String password = etPasWord.getText().toString().trim();
         pd.setMessage(getResources().getString(R.string.register));
         pd.show();
-        NetDao.register(mContext, name, nick, password, new OkHttpUtils.OnCompleteListener<Result>() {
+        NetDao.register(mContext, mName, nick, password, new OkHttpUtils.OnCompleteListener<Result>() {
             @Override
             public void onSuccess(Result result) {
+                pd.dismiss();
                 if (result == null) {
                     CommonUtils.showShortToast(R.string.register_fail);
                 } else {
                     if (result.isRetMsg()) {
-                        setResult(RESULT_OK, new Intent().putExtra(I.User.USER_NAME, name));
+                        setResult(RESULT_OK, new Intent().putExtra(I.User.USER_NAME, etLoginName.getText().toString().trim()));
                         CommonUtils.showShortToast(R.string.register_success);
+                        MFGT.finish(mContext);
                     } else {
                         CommonUtils.showShortToast(R.string.register_fail_exists);
                         etLoginName.requestFocus();
                     }
                 }
             }
+
             @Override
             public void onError(String error) {
+                pd.dismiss();
+                CommonUtils.showLongToast(error);
                 Log.i("main", "onError: " + error);
             }
         });
 
     }
+
+
 }

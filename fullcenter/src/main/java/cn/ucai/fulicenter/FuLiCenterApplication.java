@@ -9,19 +9,31 @@ import android.app.Application;
 public class FuLiCenterApplication extends Application {
     public static FuLiCenterApplication applicationContext;
     private static FuLiCenterApplication instance;
- public FuLiCenterApplication(){
+    private static String userName;
+
+    public FuLiCenterApplication(){
      instance=this;
   }
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        applicationContext=this;
-        instance=this;
+
+    public static String getUserName() {
+        return userName;
     }
+
+    public static void setUserName(String userName) {
+        FuLiCenterApplication.userName = userName;
+    }
+
     public static FuLiCenterApplication getInstance() {
         if (instance == null) {
             instance=new FuLiCenterApplication();
         }
         return instance;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        applicationContext=this;
+        instance=this;
     }
 }

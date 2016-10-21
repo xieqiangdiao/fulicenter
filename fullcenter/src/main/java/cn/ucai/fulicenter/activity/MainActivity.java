@@ -1,25 +1,24 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import uai.cn.fullcenter.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
         mFragment[0] = new NewGoodsFragment();
         mFragment[1] = new BoutiqueFragment();
         mFragment[2] = new CategoryFragment();
-
+        mFragment[3] = new CategoryFragment();
+        mFragment[4] = new CategoryFragment();
     }
 
     @OnClick({R.id.view, R.id.Boutique, R.id.Category, R.id.new_Goods, R.id.Personal, R.id.Cars})
@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
                 index=0;
                 break;
             case R.id.Personal:
+                index=4;
+                if(FuLiCenterApplication.getUserName()==null){
+                    MFGT.gotoLogin(this);
+                }
                 break;
             case R.id.Cars:
                 break;
@@ -87,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         if (index != currentIndex) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             if (currentIndex<5){
-
                 ft.hide(mFragment[currentIndex]);
             }
             if (!mFragment[index].isAdded()) {
