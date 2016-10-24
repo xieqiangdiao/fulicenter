@@ -25,7 +25,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/ivtitle"
+            android:layout_toRightOf="@id/ivtitle"
             android:text="账户登录"
             android:textSize="20dp" />
     </RelativeLayout>
@@ -33,8 +33,8 @@
         android:id="@+id/et_name"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/rv"
-        android:text="用户名" />
+        android:layout_below="@id/rv"
+        android:hint="用户名" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -45,15 +45,14 @@
         android:id="@+id/layout_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/et_name"
+        android:layout_below="@id/et_name"
         android:orientation="horizontal">
     <EditText
         android:id="@+id/etpassword"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/etnichen"
         android:layout_weight="1"
-        android:text="密码" />
+        android:hint="密码" />
 
     <ImageView
 
@@ -66,7 +65,7 @@
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_password"
+        android:layout_below="@id/layout_password"
         android:layout_centerHorizontal="true"
         android:background="@drawable/tb_btn_login_orange_normal"
         android:text="登录" />
@@ -74,7 +73,7 @@
         android:id="@+id/but_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_login"
+        android:layout_below="@id/btn_login"
         android:layout_centerHorizontal="true"
         android:text="免费注册" />
 

@@ -5,13 +5,12 @@
     android:background="@color/list_item_des">
 
     <RelativeLayout
-
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:id="@+id/relativeLayout">
+        android:orientation="horizontal">
 
         <RadioGroup
             android:id="@+id/rg_bottom_layout"
@@ -95,12 +94,12 @@
         android:background="@color/blue" />
 
     <RelativeLayout
+        android:id="@+id/fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/fragment"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
         android:layout_alignBottom="@+id/view"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>
