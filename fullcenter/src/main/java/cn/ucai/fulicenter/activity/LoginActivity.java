@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.media.MediaBrowserServiceCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
+import cn.ucai.fulicenter.utils.ResultUtils;
 import uai.cn.fullcenter.R;
 
 public class LoginActivity extends BaseActivity {
@@ -101,9 +103,10 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login() {
-        NetDao.login(mContext, name, password, new OkHttpUtils.OnCompleteListener<Result>() {
+        NetDao.login(mContext, name, password, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
-            public void onSuccess(Result result) {
+            public void onSuccess(String s) {
+                Result result= ResultUtils.getListResultFromJson(s, I.User.class);
                 L.e(TAG, "reult=" + result);
                 if (result == null) {
                     CommonUtils.showShortToast(R.string.login_fail);
