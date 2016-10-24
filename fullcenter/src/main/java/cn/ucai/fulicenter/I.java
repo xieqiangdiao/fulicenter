@@ -1,4 +1,4 @@
-package cn.ucai.fulicenter.utils;
+package cn.ucai.fulicenter;
 
 
 public interface I {
@@ -323,6 +323,7 @@ public interface I {
     int MSG_LOCATION_UPDATE_FAIL=504;//用户更新地理位置失败
     int MSG_UNKNOW=999;//未知错误
     int MSG_ILLEGAL_REQUEST=-1;    //非法请求
+    int REQUEST_COOE_REQUEST=101;
 
     /** 上传头像图片的类型：user_avatar或group_icon */
     String AVATAR_TYPE = "avatarType";
