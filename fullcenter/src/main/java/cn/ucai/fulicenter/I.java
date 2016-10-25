@@ -51,6 +51,7 @@ public interface I {
     int CATEGORY_GOOD=1;
     int CAT_ID=0;
 
+
     interface Goods {
         String KEY_RESULT = "result";
         String RESPONSE_SUCCESS = "success";
@@ -245,6 +246,7 @@ public interface I {
         String USER_NAME = "m_avatar_user_name";//用户账号或者群组账号
         String AVATAR_PATH = "m_avatar_path";//保存路径
         String AVATAR_TYPE = "m_avatar_type";//头像类型：\n0:用户头像\n1:群组头像
+        String AVATAR_SUFFIX="m_user_avatar_suffix";
     }
 
     /**
@@ -276,6 +278,7 @@ public interface I {
     String AVATAR_TYPE_GROUP_PATH ="group_icon";//群组头像保存目录
     String AVATAR_SUFFIX_PNG=".png";//PNG图片后缀名
     String AVATAR_SUFFIX_JPG=".jpg";//JPG图片后缀名
+    String AVATAR_SUFFIX="m_avatar_suffix";//JPG图片后缀名
     String QUESTION = "?";//问号
     String EQUAL = "="; //等号
     String AND = "&"; //&符号
@@ -324,6 +327,8 @@ public interface I {
     int MSG_UNKNOW=999;//未知错误
     int MSG_ILLEGAL_REQUEST=-1;    //非法请求
     int REQUEST_COOE_REQUEST=101;
+    int REQUEST_COOE_LOGIN=111;
+    int REQUEST_CODE_NICK=103;
 
     /** 上传头像图片的类型：user_avatar或group_icon */
     String AVATAR_TYPE = "avatarType";
@@ -416,5 +421,8 @@ public interface I {
     /** 下载精选首页图像的接口*/
     String DOWNLOAD_IMG_URL= I.SERVER_ROOT+
             REQUEST_DOWNLOAD_IMAGE+I.QUESTION+ IMAGE_URL+"=";
+
+    String DOWNLOAD_AVATAR_URL=I.SERVER_ROOT+
+            REQUEST_DOWNLOAD_AVATAR+I.QUESTION;
 
 }

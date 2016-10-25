@@ -2,9 +2,8 @@ package cn.ucai.fulicenter.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.media.MediaBrowserServiceCompat;
 import android.text.TextUtils;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,13 +11,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.bean.Result;
+import cn.ucai.fulicenter.bean.UserAvatar;
+import cn.ucai.fulicenter.dao.ShareprefrenceUtils;
+import cn.ucai.fulicenter.dao.UserDao;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
-import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
@@ -27,6 +32,26 @@ import uai.cn.fullcenter.R;
 
 public class LoginActivity extends BaseActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
+//    @Bind(R.id.ivtitle)
+//    ImageView ivtitle;
+//    @Bind(R.id.tvlogin)
+//    TextView tvlogin;
+//    @Bind(R.id.rv)
+//    RelativeLayout rv;
+//    @Bind(R.id.et_name)
+//    EditText etName;
+//    @Bind(R.id.etpassword)
+//    EditText etpassword;
+//    @Bind(R.id.layout_password)
+//    LinearLayout layoutPassword;
+//    @Bind(R.id.btn_login)
+//    Button btnLogin;
+//    @Bind(R.id.but_register)
+//    Button butRegister;
+
+    String name;
+    String password;
+    LoginActivity mContext;
     @Bind(R.id.ivtitle)
     ImageView ivtitle;
     @Bind(R.id.tvlogin)
@@ -43,10 +68,6 @@ public class LoginActivity extends BaseActivity {
     Button btnLogin;
     @Bind(R.id.but_register)
     Button butRegister;
-
-    String name;
-    String password;
-    LoginActivity mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,34 +89,31 @@ public class LoginActivity extends BaseActivity {
     protected void setListener() {
     }
 
-    @OnClick({R.id.et_name, R.id.etpassword, R.id.btn_login, R.id.but_register})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.et_name:
-                break;
-            case R.id.etpassword:
-                break;
-            case R.id.btn_login:
-                checkedInput();
-                break;
-            case R.id.but_register:
-                MFGT.gotoRegister(this);
-//                Intent intent=new Intent(this,RegisterActivity.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
-                break;
-        }
+    /* @OnClick({R.id.et_name, R.id.etpassword, R.id.btn_login, R.id.but_register})
+     public void onClick(View view) {
+         switch (view.getId()) {
+             case R.id.et_name:
+                 break;
+             case R.id.etpassword:
+                 break;
+             case R.id.btn_login:
 
-    }
+             case R.id.but_register:
+                 MFGT.gotoRegister(this);
+ //                Intent intent=new Intent(this,RegisterActivity.class);
+ //                startActivity(intent);
+ //                overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
+                 break;
+         }
 
+     }
+ */
     private void checkedInput() {
-        String name = etName.getText().toString().trim();
-        String password = etpassword.getText().toString().trim();
-        if (TextUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(this.name)) {
             CommonUtils.showShortToast(R.string.user_name_connot_be_empty);
             etName.requestFocus();
             return;
-        } else if (TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(this.password)) {
             CommonUtils.showShortToast(R.string.password_connot_be_empty);
             etpassword.requestFocus();
             return;
@@ -106,14 +124,25 @@ public class LoginActivity extends BaseActivity {
         NetDao.login(mContext, name, password, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
-                Result result= ResultUtils.getListResultFromJson(s, I.User.class);
-                L.e(TAG, "reult=" + result);
+                Result result = ResultUtils.getListResultFromJson(s, UserAvatar.class);
+                L.e(TAG, "result=" + result);
                 if (result == null) {
                     CommonUtils.showShortToast(R.string.login_fail);
                 } else {
                     if (result.isRetMsg()) {
-                        I.User user = (I.User) result.getRetData();
+                        Gson gson = new Gson();
+                        UserAvatar user = gson.fromJson(result.getRetData().toString(), UserAvatar.class);
                         L.e(TAG, "user=" + user);
+                        UserDao dao = new UserDao(mContext);
+                        boolean isSuccess = dao.saveUser(user);
+                        if (isSuccess) {
+                            ShareprefrenceUtils.getInstance(mContext).saveUser(user.getMuserName());
+                            FuLiCenterApplication.setUserAvatar(user);
+                            MFGT.loginGotoActiviy(mContext);
+                            MFGT.finish(mContext);
+                        } else {
+                            CommonUtils.showLongToast("用户数据异常");
+                        }
                         MFGT.finish(mContext);
                     } else {
                         if (result.getRetCode() == I.MSG_LOGIN_UNKNOW_USER) {
@@ -123,7 +152,6 @@ public class LoginActivity extends BaseActivity {
                         } else {
                             CommonUtils.showLongToast(R.string.login_fail);
                         }
-
                     }
                 }
             }
@@ -131,7 +159,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onError(String error) {
                 CommonUtils.showLongToast(error);
-                L.e(TAG,"error="+error);
+                L.e(TAG, "error=" + error);
             }
         });
         {
@@ -148,4 +176,33 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    @OnClick(R.id.btn_login)
+    public void onClick() {
+        name = etName.getText().toString().trim();
+        password = etpassword.getText().toString().trim();
+        L.e(name + password);
+        checkedInput();
+        NetDao.login(mContext, name, password, new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                L.e("123" + result);
+                if (result != null) {
+                    Result re = ResultUtils.getResultFromJson(result, UserAvatar.class);
+                    if (re.getRetCode()==0&&re.isRetMsg()) {
+                        UserAvatar user = (UserAvatar) re.getRetData();
+                        FuLiCenterApplication.getInstance().setUserAvatar(user);
+                        //ShareprefrenceUtils.
+                        FuLiCenterApplication.getInstance().setUserName(user.getMuserName());
+                        Log.e("main", "dengluchenggong" + user);
+                        MFGT.finish(mContext);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+            }
+        });
+
+    }
 }

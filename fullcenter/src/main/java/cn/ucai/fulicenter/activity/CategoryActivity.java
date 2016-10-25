@@ -24,7 +24,7 @@ import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.views.CatChildFilterButton;
-import cn.ucai.fulicenter.views.I;
+import cn.ucai.fulicenter.I;
 import uai.cn.fullcenter.R;
 
 public class CategoryActivity extends AppCompatActivity {
@@ -138,7 +138,6 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     protected void setListener() {
-
     }
 
     @OnClick({R.id.btn_sort_price, R.id.btn_sort_addtime})

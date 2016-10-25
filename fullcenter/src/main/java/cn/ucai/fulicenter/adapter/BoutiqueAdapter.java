@@ -19,7 +19,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.MFGT;
-import cn.ucai.fulicenter.views.I;
+import cn.ucai.fulicenter.I;
 import uai.cn.fullcenter.R;
 
 /**

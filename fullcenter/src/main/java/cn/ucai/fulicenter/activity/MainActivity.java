@@ -14,16 +14,19 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.dao.ShareprefrenceUtils;
 import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
+import cn.ucai.fulicenter.fragment.PersonalFragment;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 import uai.cn.fullcenter.R;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    private static final String TAG = MainActivity.class.getSimpleName();
     @Bind(R.id.Boutique)
     RadioButton Boutique;
     @Bind(R.id.Category)
@@ -44,9 +47,11 @@ public class MainActivity extends AppCompatActivity {
     NewGoodsFragment newGoodsFragment;
     BoutiqueFragment boutiqueFragment;
     CategoryFragment categoryFragment;
+    PersonalFragment personalFragment;
+
 
     int index;
-    int currentIndex=8;
+    int currentIndex = 8;
     Fragment[] mFragment = new Fragment[9];
 
 
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         mFragment[0] = new NewGoodsFragment();
         mFragment[1] = new BoutiqueFragment();
         mFragment[2] = new CategoryFragment();
-        mFragment[3] = new CategoryFragment();
+        mFragment[3] = new PersonalFragment();
         mFragment[4] = new CategoryFragment();
     }
 
@@ -67,30 +72,30 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.Boutique:
-                index=1;
+                index = 1;
                 break;
             case R.id.Category:
-                index=2;
+                index = 2;
                 break;
             case R.id.new_Goods:
-                index=0;
+                index = 0;
                 break;
             case R.id.Personal:
-                index=4;
-                if(FuLiCenterApplication.getUserName()==null){
-                    MFGT.gotoLogin(this);
-                }
+
+                    index = 3;
+
                 break;
             case R.id.Cars:
                 break;
         }
         setFragment();
     }
-//fragment切换优化
+
+    //fragment切换优化
     private void setFragment() {
         if (index != currentIndex) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            if (currentIndex<5){
+            if (currentIndex < 5) {
                 ft.hide(mFragment[currentIndex]);
             }
             if (!mFragment[index].isAdded()) {
@@ -106,8 +111,29 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         ButterKnife.unbind(this);
     }
-    public void onBackPressed(){
+
+    public void onBackPressed() {
         finish();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        L.e(TAG, "onResume...");
+        if (index ==3 && FuLiCenterApplication.getUserAvatar() == null) {
+            index = 0;
+        }
+        setFragment();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == I.REQUEST_COOE_LOGIN && resultCode == RESULT_OK&&FuLiCenterApplication.getUserAvatar()!=null) {
+            index = 3;
+            setFragment();
+        }
+
     }
 
 }

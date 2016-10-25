@@ -13,14 +13,12 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.ucai.fulicenter.adapter.GoodAdapter;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.ConvertUtils;
-import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
-import cn.ucai.fulicenter.views.I;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
 import uai.cn.fullcenter.R;
 

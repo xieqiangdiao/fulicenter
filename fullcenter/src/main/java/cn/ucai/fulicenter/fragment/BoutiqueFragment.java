@@ -24,7 +24,7 @@ import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
-import cn.ucai.fulicenter.views.I;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
 import uai.cn.fullcenter.R;
 
@@ -96,7 +96,6 @@ public class BoutiqueFragment extends BaseFragment {
 
                 }
             }
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -123,7 +122,6 @@ public class BoutiqueFragment extends BaseFragment {
                     ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
                     if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                         mAdapter.initData(list);
-
                     }else{
                         mAdapter.addData(list);
                     }

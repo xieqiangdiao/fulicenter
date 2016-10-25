@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import cn.ucai.fulicenter.activity.CategoryActivity;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.utils.ConvertUtils;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import uai.cn.fullcenter.R;
 

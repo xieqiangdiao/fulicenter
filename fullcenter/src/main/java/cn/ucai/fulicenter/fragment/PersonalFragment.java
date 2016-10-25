@@ -4,6 +4,7 @@ package cn.ucai.fulicenter.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,8 @@ public class PersonalFragment extends BaseFragment {
     TextView tvLaoutOne;
     @Bind(R.id.layout_image_three)
     LinearLayout layoutImageThree;
+    UserAvatar user = null;
+
 
     public PersonalFragment() {
         // Required empty public constructor
@@ -73,25 +76,37 @@ public class PersonalFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-      //  String userName = FuLiCenterApplication.getUserName();
-        UserAvatar userAvatar = FuLiCenterApplication.getUserAvatar();
-        if ( userAvatar== null) {
-            MFGT.gotoLoginActiviy(getActivity());
-        }
-        else tvUserName.setText(userAvatar.getMuserNick());
+//        String userName = FuLiCenterApplication.getUserName();
+//        UserAvatar userAvatar = FuLiCenterApplication.getUserAvatar();
+//        if ( userAvatar== null) {
+//            MFGT.gotoLoginActiviy(getActivity());
+//        }
+//        else tvUserName.setText(userAvatar.getMuserNick());
 
     }
 
     @Override
     protected void initData() {
-        UserAvatar userAvatar = FuLiCenterApplication.getUserAvatar();
-        if (userAvatar == null) {
-            MFGT.gotoLogin(mContext);
-        } else {
-            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(userAvatar), mContext, ivUserAvatar);
-            tvUserName.setText(userAvatar.getMuserNick());
+        UserAvatar user = FuLiCenterApplication.getUserAvatar();
+        if (user != null) {
+            tvUserName.setText(user.getMuserNick());
+            if (user.getMavatarSuffix() != null) {
+                ImageLoader.downloadAvatar(ImageLoader.getAvatarUrl(user), mContext, ivUserAvatar);
+            }
+        }
+        else {
+            MFGT.gotoLoginActiviy(getActivity());
         }
     }
+
+//        UserAvatar userAvatar = FuLiCenterApplication.getUserAvatar();
+//        if (userAvatar == null) {
+//            MFGT.gotoLogin(mContext);
+//        } else {
+//            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(userAvatar), mContext, ivUserAvatar);
+//            tvUserName.setText(userAvatar.getMuserNick());
+//        }
+
 
     @Override
     protected void setListener() {
@@ -112,5 +127,11 @@ public class PersonalFragment extends BaseFragment {
             case R.id.tv_user_name:
                 break;
         }
+    }
+
+    @OnClick(R.id.tv_layout_one)
+    public void onClick() {
+        UserAvatar avatar = FuLiCenterApplication.getUserAvatar();
+        MFGT.gotoSettings(mContext);
     }
 }

@@ -19,7 +19,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
-import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.views.DisplayUtils;
@@ -123,9 +123,7 @@ public class RegisterActivity extends BaseActivity {
                 register();
         }
     }
-
     public void register() {
-
         final ProgressDialog pd = new ProgressDialog(mContext);
         String mName = etLoginName.getText().toString().trim();
         String nick = etNiChen.getText().toString().trim();
@@ -149,7 +147,6 @@ public class RegisterActivity extends BaseActivity {
                     }
                 }
             }
-
             @Override
             public void onError(String error) {
                 pd.dismiss();

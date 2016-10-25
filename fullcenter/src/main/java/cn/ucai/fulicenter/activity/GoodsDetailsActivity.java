@@ -3,7 +3,6 @@ package cn.ucai.fulicenter.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
@@ -23,7 +22,7 @@ import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.views.FlowIndicator;
-import cn.ucai.fulicenter.views.I;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.views.SlideAutoLoopView;
 import uai.cn.fullcenter.R;
 
