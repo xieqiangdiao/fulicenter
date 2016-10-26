@@ -35,7 +35,7 @@
     <string name="update_user_avatar_fail">更新用户头像失败</string>
     <string name="update_user_avatar_success">更新用户头像成功</string>
     <string name="collte_title">收藏图片</string>
-
+    <string name="delete_collect_fail" >删除成功</string>
 
 
 </resources>

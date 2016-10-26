@@ -5,22 +5,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.CollectBean;
-import cn.ucai.fulicenter.bean.NewGoodsBean;
+
+
+import cn.ucai.fulicenter.bean.MessageBean;
+import cn.ucai.fulicenter.net.NetDao;
+import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.utils.OkHttpUtils;
 import uai.cn.fullcenter.R;
 
 /**
@@ -69,15 +76,15 @@ public class CollectionAdapter extends RecyclerView.Adapter {
             CollectionViewHolder colllectionViewHolder = (CollectionViewHolder) holder;
             final CollectBean collectioinBean = mgoodlist.get(position);
             colllectionViewHolder.goodsId.setText(collectioinBean.getGoodsName());
-           // goodsViewHolder.ivcolectdel.setImageResource(ivcolectdel.ge);
+            // goodsViewHolder.ivcolectdel.setImageResource(ivcolectdel.ge);
             ImageLoader.downloadImg(mContext, colllectionViewHolder.iv, collectioinBean.getGoodsThumb());
-            colllectionViewHolder.goods_item.setOnClickListener(new View.OnClickListener() {
+            /*colllectionViewHolder.goods_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MFGT.gotoGoodsDetailActivity(mContext,collectioinBean.getGoodsId());
+                    MFGT.gotoGoodsDetailActivity(mContext, collectioinBean.getGoodsId());
                     // collectioinBean.getGoodsId()
                 }
-            });
+            });*/
         }
     }
 
@@ -124,7 +131,7 @@ public class CollectionAdapter extends RecyclerView.Adapter {
         }
     }
 
-    static class CollectionViewHolder extends RecyclerView.ViewHolder {
+     class CollectionViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv)
         ImageView iv;
         @Bind(R.id.goods_id)
@@ -138,5 +145,34 @@ public class CollectionAdapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this, view);
         }
+        @OnClick(R.id.goods_item)
+        public void onGoosItemClick() {
+            CollectBean goods=(CollectBean) goods_item.getTag();
+            MFGT.gotoGoodsDetailActivity(mContext,goods.getGoodsId());
+        }
+        @OnClick(R.id.iv_colect_del)
+        public void deleteCollect() {
+            final CollectBean goods = (CollectBean) goods_item.getTag();
+            String username = FuLiCenterApplication.getUserAvatar().getMuserName();
+            NetDao.deleteCollect(mContext, username, goods.getGoodsId(),new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if (result != null && result.isSuccess()) {
+                        mgoodlist.remove(goods);
+                        notifyDataSetChanged();
+                    }else{
+                        CommonUtils.showLongToast(result!=null?result.getMsg():
+                                mContext.getResources().getString(R.string.delete_collect_fail));
+                    }
+                }
+                @Override
+                public void onError(String error) {
+                    L.e("error="+error);
+                    CommonUtils.showLongToast(mContext.getResources().getString(R.string.delete_collect_fail));
+                }
+            });
+
+        }
+
     }
 }

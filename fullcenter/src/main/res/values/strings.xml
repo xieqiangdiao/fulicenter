@@ -11,4 +11,5 @@
     <string name="update_user_avatar_fail">"update_user_avatar_fail</string>
     <string name="update_user_avatar_success">update_user_avatar_success</string>
     <string name="collte_title" >collte_title </string>
+    <string name="delete_collect_fail">delete_collect_fail</string >
 </resources>

@@ -32,7 +32,7 @@ public class MFGT {
 
     public static void startActivity(Activity context, Class<?> cls) {
         Intent intent = new Intent();
-        intent.setClass(context,cls);
+        intent.setClass(context, cls);
         startActivity(context, intent);
     }
 
@@ -73,30 +73,37 @@ public class MFGT {
     public static void gotoRegister(Activity context) {
         Intent intent = new Intent();
         intent.setClass(context, RegisterActivity.class);
-        context.startActivityForResult(intent,I.REQUEST_COOE_REQUEST);
+        context.startActivityForResult(intent, I.REQUEST_COOE_REQUEST);
         startActivity(context, RegisterActivity.class);
     }
-    public static void startActivityForResult(Activity context,Intent intent,int requestCode){
-        context.startActivityForResult(intent,requestCode);
-        context.overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
+
+    public static void startActivityForResult(Activity context, Intent intent, int requestCode) {
+        context.startActivityForResult(intent, requestCode);
+        context.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
-    public static  void gotoLoginActiviy(Activity context){
-        Intent intent=new Intent(context,LoginActivity.class);
-        context.startActivityForResult(intent,I.REQUEST_COOE_LOGIN);
+
+    public static void gotoLoginActiviy(Activity context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivityForResult(intent, I.REQUEST_COOE_LOGIN);
 
     }
-    public static  void loginGotoActiviy(Activity context){
-        Intent intent=new Intent();
-        intent.setClass(context,MainActivity.class);
-        context.setResult(Activity.RESULT_OK,intent);
+
+    public static void loginGotoActiviy(Activity context) {
+        Intent intent = new Intent();
+        intent.setClass(context, MainActivity.class);
+        context.setResult(Activity.RESULT_OK, intent);
     }
-public static void gotoSettings(Activity context){
-    startActivity(context, PersonDetailsActivity.class);
-}
-    public static void gotoUpdateNick(Activity context){
-        startActivityForResult(context, new Intent(context, ModifiedNickNameActivity.class),I.REQUEST_CODE_NICK);
+
+    public static void gotoSettings(Activity context) {
+        startActivity(context, PersonDetailsActivity.class);
     }
-    public static void gotoCollects(Activity context){
+
+    public static void gotoUpdateNick(Activity context) {
+        startActivityForResult(context, new Intent(context, ModifiedNickNameActivity.class), I.REQUEST_CODE_NICK);
+    }
+
+    public static void gotoCollects(Activity context) {
         startActivity(context, CollectionActivity.class);
     }
+
 }

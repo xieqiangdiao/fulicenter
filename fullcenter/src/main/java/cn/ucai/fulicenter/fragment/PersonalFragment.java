@@ -4,6 +4,7 @@ package cn.ucai.fulicenter.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,6 +136,11 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.tv_user_name:
                 break;
+           /* case R.id.layout_center_collect:
+                Log.i("main", "gotoCollectsList: ");
+
+                MFGT.gotoCollects(mContext);
+                break;*/
         }
     }
 
@@ -144,6 +150,11 @@ public class PersonalFragment extends BaseFragment {
         MFGT.gotoSettings(mContext);
     }
 
+  @OnClick(R.id.layout_center_collect)
+  public void gotoCollectsList() {
+      Log.e("main", "gotoCollectsList: ");
+      MFGT.gotoCollects(mContext);
+  }
     private void syncUserInfo() {
         NetDao.syncUserInfo(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<String>() {
             @Override
@@ -190,8 +201,5 @@ public class PersonalFragment extends BaseFragment {
         });
     }
 
-    @OnClick(R.id.layout_center_collect)
-    public void gotoCollectsList() {
-        MFGT.gotoCollects(mContext);
-    }
+
 }
