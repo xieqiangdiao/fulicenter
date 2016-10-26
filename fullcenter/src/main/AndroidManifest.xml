@@ -3,8 +3,9 @@
     package="uai.cn.fullcenter">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name="cn.ucai.fulicenter.FuLiCenterApplication"
         android:allowBackup="true"
@@ -27,7 +28,8 @@
         <activity android:name="cn.ucai.fulicenter.activity.RegisterActivity" />
         <activity android:name="cn.ucai.fulicenter.activity.Main2Activity" />
         <activity android:name="cn.ucai.fulicenter.activity.PersonDetailsActivity" />
-        <activity android:name="cn.ucai.fulicenter.activity.ModifiedNickNameActivity"></activity>
+        <activity android:name="cn.ucai.fulicenter.activity.ModifiedNickNameActivity" />
+        <activity android:name="cn.ucai.fulicenter.activity.CollectionActivity"></activity>
     </application>
 
 </manifest>

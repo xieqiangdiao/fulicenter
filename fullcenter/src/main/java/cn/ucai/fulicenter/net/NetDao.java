@@ -7,6 +7,7 @@ import java.io.File;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
+import cn.ucai.fulicenter.bean.CollectBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
@@ -107,24 +108,7 @@ public class NetDao {
                 .execute(listener);
     }
 
-    public static void addCollect(Context context, int goodsid, String username, OkHttpUtils.OnCompleteListener<MessageBean> listener){
-        OkHttpUtils<MessageBean> utils =new OkHttpUtils<>(context);
-        utils.url(I.SERVER_ROOT+I.REQUEST_ADD_COLLECT)
-                .addParam(I.Goods.KEY_GOODS_ID,String.valueOf(goodsid))
-                .addParam(I.User.USER_NAME,username)
-                .targetClass(MessageBean.class)
-                .execute(listener);
 
-    }
-    public static void isCollect(Context context, int goodsid, String username, OkHttpUtils.OnCompleteListener<MessageBean> listener){
-        OkHttpUtils<MessageBean> utils =new OkHttpUtils<>(context);
-        utils.url(I.SERVER_ROOT+I.REQUEST_IS_COLLECT)
-                .addParam(I.Goods.KEY_GOODS_ID,String.valueOf(goodsid))
-                .addParam(I.User.USER_NAME,username)
-                .targetClass(MessageBean.class)
-                .execute(listener);
-
-    }
     public static void updateNick(Context context, String username, String nick, OkHttpUtils.OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_UPDATE_USER_NICK)
@@ -142,5 +126,30 @@ public class NetDao {
                 .targetClass(String.class)
                 .post()
                 .execute(listener);
+    }
+    public static void syncUserInfo(Context context, String username, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_USER)
+                .addParam(I.User.USER_NAME,username)
+                .targetClass(String.class)
+                .execute(listener);
+    }
+    public static void getCollectsCount(Context context, String username, OkHttpUtils.OnCompleteListener<MessageBean> listener){
+        OkHttpUtils<MessageBean> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_COLLECT_COUNT)
+                .addParam(I.Collect.USER_NAME,username)
+                .targetClass(MessageBean.class)
+                .execute(listener);
+
+    }
+    public static void downloadCollects(Context context, String username,int pageId, OkHttpUtils.OnCompleteListener<CollectBean[]> listener){
+        OkHttpUtils<CollectBean[]> utils =new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_COLLECTS)
+                .addParam(I.Collect.USER_NAME,username)
+                .addParam(I.PAGE_ID,String.valueOf(pageId))
+                .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
+                .targetClass(CollectBean[].class)
+                .execute(listener);
+
     }
 }

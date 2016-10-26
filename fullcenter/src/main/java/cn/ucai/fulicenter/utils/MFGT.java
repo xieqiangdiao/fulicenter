@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.activity.CategoryActivity;
+import cn.ucai.fulicenter.activity.CollectionActivity;
 import cn.ucai.fulicenter.activity.GoodsDetailsActivity;
 import cn.ucai.fulicenter.activity.LoginActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
@@ -94,5 +95,8 @@ public static void gotoSettings(Activity context){
 }
     public static void gotoUpdateNick(Activity context){
         startActivityForResult(context, new Intent(context, ModifiedNickNameActivity.class),I.REQUEST_CODE_NICK);
+    }
+    public static void gotoCollects(Activity context){
+        startActivity(context, CollectionActivity.class);
     }
 }

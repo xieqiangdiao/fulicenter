@@ -2,10 +2,8 @@ package cn.ucai.fulicenter.fragment;
 
 
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.activity.LoginActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.dao.UserDao;
@@ -63,10 +62,14 @@ public class PersonalFragment extends BaseFragment {
     @Bind(R.id.layout_image_three)
     LinearLayout layoutImageThree;
     UserAvatar user = null;
+    @Bind(R.id.tv_collection)
+    TextView tvCollection;
+    @Bind(R.id.layout_center_collect)
+    LinearLayout layoutCenterCollect;
 
 
     public PersonalFragment() {
-        // Required empty public constructor
+
     }
 
     @Nullable
@@ -83,12 +86,6 @@ public class PersonalFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-//        String userName = FuLiCenterApplication.getUserName();
-//        UserAvatar userAvatar = FuLiCenterApplication.getUserAvatar();
-//        if ( userAvatar== null) {
-//            MFGT.gotoLoginActiviy(getActivity());
-//        }
-//        else tvUserName.setText(userAvatar.getMuserNick());
 
     }
 
@@ -100,8 +97,9 @@ public class PersonalFragment extends BaseFragment {
             if (user.getMavatarSuffix() != null) {
                 ImageLoader.downloadAvatar(ImageLoader.getAvatarUrl(user), mContext, ivUserAvatar);
             }
-        }
-        else {
+            syncUserInfo();
+            syncCollectsCount();
+        } else {
             MFGT.gotoLoginActiviy(getActivity());
         }
     }
@@ -110,6 +108,19 @@ public class PersonalFragment extends BaseFragment {
     protected void setListener() {
 
     }
+
+//    @Override
+//        public void onResume() {
+//            super.onResume();
+//            user=FuLiCenterApplication.getUserAvatar();
+//            L.e(TAG,"user="+user);
+//            if(user!=null){
+//                ImageLoader.downloadAvatar(ImageLoader.getAvatarUrl(user));
+//                tvUserName.setText(user.getMuserNick());
+//
+//
+//            }
+//    }
 
     @Override
     public void onDestroyView() {
@@ -132,20 +143,21 @@ public class PersonalFragment extends BaseFragment {
         UserAvatar avatar = FuLiCenterApplication.getUserAvatar();
         MFGT.gotoSettings(mContext);
     }
-    private  void syncUserInfo(){
+
+    private void syncUserInfo() {
         NetDao.syncUserInfo(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
-                Result result= ResultUtils.getListResultFromJson(s,UserAvatar.class);
-                if(result!=null){
-                    UserAvatar u= (UserAvatar) result.getRetData();
-                    if(result!=null){
-                        UserDao dao=new UserDao(mContext);
-                        boolean b=dao.saveUser(u);
-                        if(b){
+                Result result = ResultUtils.getListResultFromJson(s, UserAvatar.class);
+                if (result != null) {
+                    UserAvatar u = (UserAvatar) result.getRetData();
+                    if (result != null) {
+                        UserDao dao = new UserDao(mContext);
+                        boolean b = dao.saveUser(u);
+                        if (b) {
                             FuLiCenterApplication.setUserAvatar(u);
-                            user=u;
-                            ImageLoader.downloadAvatar(ImageLoader.getAvatarUrl(user),mContext,ivUserAvatar);
+                            user = u;
+                            ImageLoader.downloadAvatar(ImageLoader.getAvatarUrl(user), mContext, ivUserAvatar);
                             tvUserName.setText(user.getMuserNick());
                         }
                     }
@@ -157,5 +169,29 @@ public class PersonalFragment extends BaseFragment {
                 L.e("result=" + error);
             }
         });
+    }
+
+    private void syncCollectsCount() {
+        NetDao.getCollectsCount(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                if (result != null && result.isSuccess()) {
+                    tvCollection.setText(result.getMsg());
+                } else {
+                    tvCollection.setText(String.valueOf(0));
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                tvCollection.setText(String.valueOf(0));
+                L.e(TAG, "error=" + error);
+            }
+        });
+    }
+
+    @OnClick(R.id.layout_center_collect)
+    public void gotoCollectsList() {
+        MFGT.gotoCollects(mContext);
     }
 }
