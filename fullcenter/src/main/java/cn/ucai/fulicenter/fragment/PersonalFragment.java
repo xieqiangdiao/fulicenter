@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.fragment;
 
 
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,9 +19,15 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.activity.LoginActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
+import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
+import cn.ucai.fulicenter.dao.UserDao;
+import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
+import cn.ucai.fulicenter.utils.OkHttpUtils;
+import cn.ucai.fulicenter.utils.ResultUtils;
 import uai.cn.fullcenter.R;
 
 /**
@@ -99,15 +106,6 @@ public class PersonalFragment extends BaseFragment {
         }
     }
 
-//        UserAvatar userAvatar = FuLiCenterApplication.getUserAvatar();
-//        if (userAvatar == null) {
-//            MFGT.gotoLogin(mContext);
-//        } else {
-//            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(userAvatar), mContext, ivUserAvatar);
-//            tvUserName.setText(userAvatar.getMuserNick());
-//        }
-
-
     @Override
     protected void setListener() {
 
@@ -133,5 +131,31 @@ public class PersonalFragment extends BaseFragment {
     public void onClick() {
         UserAvatar avatar = FuLiCenterApplication.getUserAvatar();
         MFGT.gotoSettings(mContext);
+    }
+    private  void syncUserInfo(){
+        NetDao.syncUserInfo(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Result result= ResultUtils.getListResultFromJson(s,UserAvatar.class);
+                if(result!=null){
+                    UserAvatar u= (UserAvatar) result.getRetData();
+                    if(result!=null){
+                        UserDao dao=new UserDao(mContext);
+                        boolean b=dao.saveUser(u);
+                        if(b){
+                            FuLiCenterApplication.setUserAvatar(u);
+                            user=u;
+                            ImageLoader.downloadAvatar(ImageLoader.getAvatarUrl(user),mContext,ivUserAvatar);
+                            tvUserName.setText(user.getMuserNick());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                L.e("result=" + error);
+            }
+        });
     }
 }
