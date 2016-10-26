@@ -26,20 +26,21 @@
             android:src="@drawable/selector_share_bg" />
 
 
-        <ImageView
+       <!-- <ImageView
             android:id="@+id/iv_good_collect"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/iv_good_share"
             android:padding="5dp"
-            android:src="@mipmap/bg_collect_in" />
+            android:src="@mipmap/bg_collect_in" />-->
         <ImageView
             android:id="@+id/iv_good_like"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/iv_good_share"
             android:padding="5dp"
-            android:src="@mipmap/bg_collect_out" />
+            android:src="@drawable/selector_menu_item_goods_collection"
+            />
         <ImageView
             android:id="@+id/iv_good_car"
             android:layout_width="wrap_content"
@@ -49,27 +50,24 @@
             android:src="@drawable/selector_menu_item_cart"/>
 
 
-
     </RelativeLayout>
-
-
 
         <TextView
             android:id="@+id/englishname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/litile"
+            android:layout_marginTop="40dp"
             android:text="abdandmna"
-            android:textSize="20dp"
-            android:layout_marginTop="40dp"/>
+            android:textSize="20dp"/>
 
         <TextView
             android:id="@+id/chinaname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/englishname"
-           android:textColor="@color/good_detail_currency_price"
-            android:text="饭盒"
+           android:text="饭盒"
+            android:textColor="@color/good_detail_currency_price"
             android:textSize="20dp" />
     <TextView
         android:id="@+id/goods_price"
@@ -77,8 +75,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/englishname"
-        android:text="价格"
         android:layout_marginRight="15dp"
+        android:text="价格"
         android:textSize="20dp" />
 
         <RelativeLayout
@@ -113,9 +111,9 @@
             android:id="@+id/wv_good_brief"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
-            android:layout_below="@+id/layout_image"
             android:background="@color/good_detail_bg_white">
 
         </WebView>
