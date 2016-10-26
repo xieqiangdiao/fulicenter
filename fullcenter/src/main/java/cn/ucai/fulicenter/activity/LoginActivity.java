@@ -131,17 +131,17 @@ public class LoginActivity extends BaseActivity {
                         Gson gson = new Gson();
                         UserAvatar user = gson.fromJson(result.getRetData().toString(), UserAvatar.class);
                         L.e(TAG, "user=" + user);
-                        UserDao dao = new UserDao(mContext);
-                        boolean isSuccess = dao.saveUser(user);
-                        if (isSuccess) {
-                            ShareprefrenceUtils.getInstance(mContext).saveUser(user.getMuserName());
-                            FuLiCenterApplication.setUserAvatar(user);
-                            MFGT.loginGotoActiviy(mContext);
-                            MFGT.finish(mContext);
-                        } else {
-                            CommonUtils.showLongToast("用户数据异常");
-                        }
-                        MFGT.finish(mContext);
+//                        UserDao dao = new UserDao(mContext);
+//                        boolean isSuccess = dao.saveUser(user);
+//                        if (isSuccess) {
+//                            ShareprefrenceUtils.getInstance(mContext).saveUser(user.getMuserName());
+//                            FuLiCenterApplication.setUserAvatar(user);
+//                            MFGT.loginGotoActiviy(mContext);
+//                            MFGT.finish(mContext);
+//                        } else {
+//                            CommonUtils.showLongToast("用户数据异常");
+//                        }
+//                        MFGT.finish(mContext);
                     } else {
                         if (result.getRetCode() == I.MSG_LOGIN_UNKNOW_USER) {
                             CommonUtils.showShortToast(R.string.login_fail);
@@ -190,8 +190,18 @@ public class LoginActivity extends BaseActivity {
                         UserAvatar user = (UserAvatar) re.getRetData();
                         FuLiCenterApplication.getInstance().setUserAvatar(user);
                         //ShareprefrenceUtils.
-                        FuLiCenterApplication.getInstance().setUserName(user.getMuserName());
-                        Log.e("main", "dengluchenggong" + user);
+                        UserDao dao = new UserDao(mContext);
+                        boolean isSuccess = dao.saveUser(user);
+                        if (isSuccess) {
+                            ShareprefrenceUtils.getInstance(mContext).saveUser(user.getMuserName());
+                            FuLiCenterApplication.setUserAvatar(user);
+                            MFGT.loginGotoActiviy(mContext);
+                            FuLiCenterApplication.getInstance().setUserName(user.getMuserName());
+                            Log.e("main", "dengluchenggong" + user);
+                            MFGT.finish(mContext);
+                        } else {
+                            CommonUtils.showLongToast("用户数据异常");
+                        }
                         MFGT.finish(mContext);
                     }
                 }

@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.activity;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,7 +27,7 @@ import cn.ucai.fulicenter.views.DisplayUtils;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
 import uai.cn.fullcenter.R;
 
-public class CollectionActivity extends BaseActivity {
+public class CollectionActivity extends AppCompatActivity {
     CollectionActivity mContext;
     @Bind(R.id.backClickArea)
     LinearLayout backClickArea;
@@ -45,7 +46,6 @@ public class CollectionActivity extends BaseActivity {
     ArrayList<CollectBean> mList;
 
     GridLayoutManager glm;
-    SwipeRefreshLayout mSrl;
     int pageId = 1;
     UserAvatar user = null;
 
@@ -53,14 +53,17 @@ public class CollectionActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         setContentView(R.layout.activity_collection);
+        super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        Log.i("main", "onCreate: CollectionActivity");
         mContext = this;
         mList = new ArrayList<>();
         mAdapter = new CollectionAdapter(mContext, mList);
-        super.onCreate(savedInstanceState);
+        initView();
+        initData();
     }
 
-    @Override
+
     protected void initView() {
         DisplayUtils.initBackWithTitle(mContext, getResources().getString(R.string.collte_title));
         srl.setColorSchemeColors(
@@ -76,28 +79,38 @@ public class CollectionActivity extends BaseActivity {
         rv.addItemDecoration(new SpaceItemDecoration(12));
     }
 
-    @Override
+
     protected void initData() {
         user = FuLiCenterApplication.getUserAvatar();
+        Log.i("main", "a"+user.toString());
         if(user==null){
             finish();
         }
+        Log.i("main", "a"+user.toString());
         downloadCollects(I.ACTION_DOWNLOAD);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+       // initData();
+   //     mAdapter.notifyDataSetChanged();
+    }
+//下载收藏商品
     private void downloadCollects(final int action) {
-
+        Log.i("main", "a"+"下载数据");
         NetDao.downloadCollects(this, user.getMuserName(), pageId, new OkHttpUtils.OnCompleteListener<CollectBean[]>() {
 
             @Override
             public void onSuccess(CollectBean[] result) {
-                Log.i("main", result.toString());
-                mSrl.setRefreshing(false);
+                Log.i("main", "a"+result.toString());
+                srl.setRefreshing(false);
                 relative.setVisibility(View.GONE);
                 mAdapter.setMore(true);
                 if (result != null && result.length > 0) {
                     ArrayList<CollectBean> list = ConvertUtils.array2List(result);
                     if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
+                        Log.i("main", "onSuccess: "+list.size());
                         mAdapter.initData(list);
                     } else {
                         mAdapter.addData(list);
@@ -112,6 +125,7 @@ public class CollectionActivity extends BaseActivity {
 
             @Override
             public void onError(String error) {
+                Log.e("main",error);
                 srl.setRefreshing(false);
                 relative.setVisibility(View.GONE);
                 mAdapter.setMore(false);
@@ -119,7 +133,7 @@ public class CollectionActivity extends BaseActivity {
         });
     }
 
-    @Override
+
     protected void setListener() {
 
     }
