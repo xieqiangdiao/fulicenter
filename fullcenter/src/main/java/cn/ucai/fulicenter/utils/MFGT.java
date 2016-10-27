@@ -69,7 +69,11 @@ public class MFGT {
         intent.setClass(context, LoginActivity.class);
         startActivity(context, LoginActivity.class);
     }
-
+    public static void gotoLoginFromCart(Activity context) {
+        Intent intent = new Intent();
+        intent.setClass(context, LoginActivity.class);
+        startActivityForResult(context,intent, I.REQUEST_COOE_LOGIN_FROM_CART);
+    }
     public static void gotoRegister(Activity context) {
         Intent intent = new Intent();
         intent.setClass(context, RegisterActivity.class);
