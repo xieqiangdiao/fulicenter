@@ -2,13 +2,17 @@ package cn.ucai.fulicenter.adapter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,9 +21,13 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
+import cn.ucai.fulicenter.bean.MessageBean;
+import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.OkHttpUtils;
 import uai.cn.fullcenter.R;
 
 /**
@@ -32,20 +40,21 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
 
     public CartAdapter(Context mContext, ArrayList<CartBean> list) {
         this.mContext = mContext;
-        mList = new ArrayList<>();
-        mList.addAll(list);
+        this.mList = list;
+
     }
 
     @Override
     public CartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CartViewHolder holder = new CartViewHolder(LayoutInflater.from(mContext)
-                .inflate(R.layout.item_car, parent, false));
+        Log.i("a", "onCreateViewHolder: ");
+        CartViewHolder holder = new CartViewHolder(View
+                .inflate(mContext,R.layout.item_car,null));
         return holder;
     }
 
     @Override
     public void onBindViewHolder(CartViewHolder holder, int position) {
-        CartBean cartBean = mList.get(position);
+        final CartBean cartBean = mList.get(position);
         GoodsDetailsBean goods = cartBean.getGoods();
         if (goods != null) {
             ImageLoader.downloadImg(mContext, holder.ivCartThumb, goods.getGoodsThumb());
@@ -53,7 +62,15 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
             holder.tvCartPrice.setText(goods.getCurrencyPrice());
         }
         holder.tvCartCount.setText("(" + cartBean.getCount() + ")");
-        holder.cbCartSelected.setChecked(false);
+        holder.cbCartSelected.setChecked(cartBean.isChecked());
+        holder.cbCartSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean b) {
+                cartBean.setChecked(b);
+                mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+            }
+        });
+        holder.ivCartAdd.setTag(position);
     }
 
     @Override
@@ -62,10 +79,7 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
     }
 
     public void initData(ArrayList<CartBean> list) {
-        if (mList != null) {
-            mList.clear();
-        }
-        mList.addAll(list);
+        mList = list;
         notifyDataSetChanged();
     }
 
@@ -91,9 +105,74 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
         @Bind(R.id.layout_cart_item)
         RelativeLayout layoutCartItem;
 
-        public CartViewHolder(View view) {
+        CartViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+        }
+
+        @OnClick(R.id.iv_cart_add)
+        public void addCart() {
+            final int position = (int) ivCartAdd.getTag();
+            CartBean cart = mList.get(position);
+            if (cart.getCount() > 1) {
+                NetDao.updateCart(mContext, cart.getId(), cart.getCount() + 1, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result != null && result.isSuccess()) {
+                            mList.get(position).setCount(mList.get(position).getCount() + 1);
+                            mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+                            tvCartCount.setText("(" + (mList.get(position).getCount()) + ")");
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }
+
+        }
+
+        @OnClick(R.id.iv_cart_del)
+        public void delCart() {
+            final int position = (int) ivCartAdd.getTag();
+            CartBean cart = mList.get(position);
+            if (cart.getCount() > 1) {
+
+                NetDao.updateCart(mContext, cart.getId(), cart.getCount() - 1, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result != null && result.isSuccess()) {
+                            mList.get(position).setCount(mList.get(position).getCount() - 1);
+                            mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+                            tvCartCount.setText("(" + (mList.get(position).getCount()) + ")");
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            } else {
+                NetDao.deleteCart(mContext, cart.getId(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result != null && result.isSuccess()) {
+                            mList.remove(position);
+                            mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+                            notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }
+
         }
     }
 

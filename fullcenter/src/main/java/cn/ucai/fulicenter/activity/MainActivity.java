@@ -17,6 +17,7 @@ import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.dao.ShareprefrenceUtils;
 import cn.ucai.fulicenter.fragment.BoutiqueFragment;
+import cn.ucai.fulicenter.fragment.CartFragment;
 import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.fragment.PersonalFragment;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     BoutiqueFragment boutiqueFragment;
     CategoryFragment categoryFragment;
     PersonalFragment personalFragment;
-
+    CartFragment cartFragment;
 
     int index;
     int currentIndex = 8;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         mFragment[1] = new BoutiqueFragment();
         mFragment[2] = new CategoryFragment();
         mFragment[3] = new PersonalFragment();
-        mFragment[4] = new CategoryFragment();
+        mFragment[4] = new CartFragment();
     }
 
     @OnClick({R.id.view, R.id.Boutique, R.id.Category, R.id.new_Goods, R.id.Personal, R.id.Cars})
@@ -81,11 +82,14 @@ public class MainActivity extends AppCompatActivity {
                 index = 0;
                 break;
             case R.id.Personal:
-
-                    index = 3;
-
+                index = 3;
                 break;
             case R.id.Cars:
+                if (FuLiCenterApplication.getUserAvatar() == null) {
+                    MFGT.gotoLoginFromCart(this);
+                } else {
+                    index = 4;
+                }
                 break;
         }
         setFragment();
@@ -115,11 +119,12 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         L.e(TAG, "onResume...");
-        if (index ==3 && FuLiCenterApplication.getUserAvatar() == null) {
+        if (index == 3 && FuLiCenterApplication.getUserAvatar() == null) {
             index = 0;
         }
         setFragment();
@@ -129,9 +134,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == I.REQUEST_COOE_LOGIN && resultCode == RESULT_OK&&FuLiCenterApplication.getUserAvatar()!=null) {
-            index = 3;
-            setFragment();
+        if (/*requestCode == I.REQUEST_COOE_LOGIN && resultCode == RESULT_OK &&*/ FuLiCenterApplication.getUserAvatar() != null) {
+            if (requestCode == I.REQUEST_COOE_LOGIN) {
+                index = 3;
+                setFragment();
+            }
+            if (requestCode == I.REQUEST_COOE_LOGIN_FROM_CART) {
+                index = 4;
+            }
         }
 
     }
