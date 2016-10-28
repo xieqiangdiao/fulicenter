@@ -27,6 +27,7 @@ import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import uai.cn.fullcenter.R;
 
@@ -48,7 +49,7 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
     public CartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.i("a", "onCreateViewHolder: ");
         CartViewHolder holder = new CartViewHolder(View
-                .inflate(mContext,R.layout.item_car,null));
+                .inflate(mContext, R.layout.item_car, null));
         return holder;
     }
 
@@ -110,6 +111,12 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
             ButterKnife.bind(this, view);
         }
 
+        @OnClick(R.id.layout_cart_item)
+        public  void gotoDetail(){
+            final int position = (int) ivCartAdd.getTag();
+            CartBean cart = mList.get(position);
+            MFGT.gotoGoodsDetailActivity(mContext,cart.getGoodsId());
+        }
         @OnClick(R.id.iv_cart_add)
         public void addCart() {
             final int position = (int) ivCartAdd.getTag();
