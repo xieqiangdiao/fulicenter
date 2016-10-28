@@ -33,6 +33,7 @@ import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
 import uai.cn.fullcenter.R;
@@ -69,6 +70,8 @@ public class CartFragment extends Fragment {
     SwipeRefreshLayout srl;
 
     updateCartReceiver mReceiver;
+    int orderprice = 0;
+    String cartIds = null;
 
     @Nullable
     @Override
@@ -126,7 +129,7 @@ public class CartFragment extends Fragment {
                     Log.i("main", result.toString());
                     if (result != null && result.length > 0) {
                         ArrayList<CartBean> list = ConvertUtils.array2List(result);
-                        mList=list;
+                        mList = list;
                         mAdapter.initData(list);
                     }
                 }
@@ -176,19 +179,26 @@ public class CartFragment extends Fragment {
         rv.setVisibility(hasCart ? View.VISIBLE : View.GONE);
 
     }
-
     @OnClick(R.id.tv_cart_buy)
     public void onClick() {
+        if (cartIds != null&&cartIds.equals("")&&cartIds.length()>0) {
+
+            MFGT.gotoBuy(mContext, cartIds);
+        } else {
+            CommonUtils.showLongToast(R.string.order_nothing);
+        }
     }
 
     private void sumPrice() {
+        cartIds = null;
         int sumPrice = 0;
         int rankPrice = 0;
-        Log.i(TAG, "sumPrice: "+mList.size());
+        Log.i(TAG, "sumPrice: " + mList.size());
         if (mList != null && mList.size() > 0) {
             for (CartBean c : mList) {
-                Log.i(TAG, "sumPrice: "+c.isChecked());
+                Log.i(TAG, "sumPrice: " + c.isChecked());
                 if (c.isChecked()) {
+                    cartIds += c.getId() + ",";
                     sumPrice += getPrice(c.getGoods().getCurrencyPrice()) * c.getCount();
                     rankPrice += getPrice(c.getGoods().getRankPrice()) * c.getCount();
                 }
@@ -216,13 +226,19 @@ public class CartFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        L.e(TAG, "onResume......");
+    }
+
     //广播
     class updateCartReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             L.e(TAG, "updateCartReceiver");
             sumPrice();
-
+            setCartLsout(mList != null && mList.size() > 0);
         }
     }
 }
